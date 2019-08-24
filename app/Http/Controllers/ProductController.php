@@ -14,7 +14,18 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return response()->json(Product::all(),200);
+//        return response()->json(Product::all(),200);
+        $products = Product::all();
+
+        $newproducts = $products->map(function ($user) {
+
+            $user->category = $user->category;
+            return $user;
+
+        });
+
+//        return response()->json(Product::all(),200);
+        return response()->json($newproducts,200);
     }
 
     /**
@@ -53,7 +64,7 @@ class ProductController extends Controller
         ]);
     }
 
-    
+
 
     public function uploadFile(Request $request)
     {
@@ -72,7 +83,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return response()->json($product,200); 
+        return response()->json($product,200);
     }
 
     /**
@@ -89,7 +100,7 @@ class ProductController extends Controller
     public function filterProducts(Request $request)
     {
         $product = $request->all();
-        $productName = $product['query']; 
+        $productName = $product['query'];
         // dd($productName);
 
         //now get all user and services in one go without looping using eager loading
@@ -97,11 +108,11 @@ class ProductController extends Controller
 
         $products = Product::query()->where('name', 'like', '%shoe%')->get();
 
-        return response()->json($products,200); 
+        return response()->json($products,200);
 
         // return view('browse.index', compact('users'));
     }
-    
+
 
     /**
      * Update the specified resource in storage.
