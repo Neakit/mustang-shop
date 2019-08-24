@@ -12,12 +12,20 @@ class Product extends Model
     protected $fillable = [
         'title',
         'description',
-        'category_id',
-//        'model_id',
         'price',
         'image',
-//        'currency_id',
-//        'status_id',
+    ];
+
+     /**
+      * The attributes that should be hidden for arrays.
+      *
+      * @var array
+      */
+    protected $hidden = [
+        'category_id',
+        'currency_id',
+        'model_id',
+        'status_id',
     ];
 
     public function category()
