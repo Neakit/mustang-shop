@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CategoriesTableSeeder extends Seeder
+class ProductsCategoriesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -43,6 +43,6 @@ class CategoriesTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('$categories')->insert($categories);
+        DB::table('categories')->insert($categories);
     }
 }

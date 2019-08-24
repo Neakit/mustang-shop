@@ -47,6 +47,6 @@ class PostTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('$posts')->insert($posts);
+        DB::table('posts')->insert($posts);
     }
 }

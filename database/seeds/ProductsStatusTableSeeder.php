@@ -27,6 +27,6 @@ class ProductsStatusTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('$product_status')->insert($statuses);
+        DB::table('product_status')->insert($statuses);
     }
 }
