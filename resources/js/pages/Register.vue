@@ -70,8 +70,6 @@
                 let c_password = this.password_confirmation
                 axios.post('api/register', {name, email, password, c_password}).then(response => {
                     let data = response.data
-                    console.log(response);
-                    debugger
                     localStorage.setItem('bigStore.user', JSON.stringify(data.user))
                     localStorage.setItem('bigStore.jwt', data.token)
                     if (localStorage.getItem('bigStore.jwt') != null) {
