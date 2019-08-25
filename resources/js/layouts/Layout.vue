@@ -1,13 +1,13 @@
 <template>
-        <div>
-            <Header />
-            <Menu />
-            <main class="py-4">
-                <!-- <router-view @loggedIn="change"></router-view> -->
-                <router-view></router-view>
-            </main>
-        </div>
-    </template>
+    <div>
+        <Header />
+        <Menu />
+        <main class="py-4">
+            <!-- <router-view @loggedIn="change"></router-view> -->
+            <router-view></router-view>
+        </main>
+    </div>
+</template>
 
     <script>
     import Menu from '../components/Menu';
@@ -26,7 +26,7 @@
             }
         },
         mounted() {
-            this.setDefaults()
+            // this.setDefaults()
         },
         methods : {
             setDefaults() {

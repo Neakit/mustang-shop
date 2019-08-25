@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+// use App\database\BuyingTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
             PostTableSeeder::class,
             ProductsCategoriesTableSeeder::class,
             ProductsCurrenciesTableSeeder::class,
-            ProductsModelTableSeeder::class,
+            ProductsModelsTableSeeder::class,
             ProductsStatusTableSeeder::class,
             ProductsTableSeeder::class,
           ]);

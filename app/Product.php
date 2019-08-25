@@ -16,16 +16,13 @@ class Product extends Model
         'image',
     ];
 
-     /**
-      * The attributes that should be hidden for arrays.
-      *
-      * @var array
-      */
     protected $hidden = [
         'category_id',
         'currency_id',
         'model_id',
         'status_id',
+        'deleted_at',
+        'updated_at'
     ];
 
     public function category()
@@ -33,7 +30,8 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
-//    public function orders(){
-//        return $this->hasMany(Order::class);
-//    }
+    public function model()
+    {
+        return $this->belongsTo(ProductModel::class, 'model_id', 'model_id');
+    }
 }

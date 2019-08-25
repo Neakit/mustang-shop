@@ -14,18 +14,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-//        return response()->json(Product::all(),200);
         $products = Product::all();
-
         $newproducts = $products->map(function ($user) {
-
             $user->category = $user->category;
+            $user->model = $user->model;
             return $user;
-
         });
-
-//        return response()->json(Product::all(),200);
-        return response()->json($newproducts,200);
+        return response()->json($newproducts, 200);
     }
 
     /**
@@ -46,15 +41,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
         $product = Product::create([
             'title' => $request->title,
             'description' => $request->description,
-            'model' => $request->model,
+            'model' => $request->model_id,
             'price' => $request->price,
             'image' => $request->image,
-            'category' => $request->category,
-            'currency' => $request->category,
-            'status' => $request->category
+            'category' => $request->category_id,
+            'currency' => $request->currency_id,
+            'status' => $request->status_id
         ]);
 
         return response()->json([

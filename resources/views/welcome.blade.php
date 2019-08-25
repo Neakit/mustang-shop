@@ -10,7 +10,8 @@
     </head>
     <body>
         <div id="app">
-        <app></app>
+        <Layout >
+        <Layout />
         </div>
         <script src="js/bootstrap.js"></script>
         <script src="js/app.js"></script>

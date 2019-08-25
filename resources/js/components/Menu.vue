@@ -32,20 +32,23 @@ export default {
         },
         {
           title: 'Магазин',
-          to: '/store'
+          to: '/shop'
         },
         {
-          title: 'Скупка'
+          title: 'Скупка',
+          to: '/buying'
         },
         {
-          title: 'Доставка'
+          title: 'Доставка',
+          to: '/delivery'
         },
         {
-          title: 'Гарантия'
+          title: 'Гарантия',
+          to: '/guarantee'
         },
         {
           title: 'Блог',
-          to: 'blog'
+          to: '/blog'
         }
       ]
     }

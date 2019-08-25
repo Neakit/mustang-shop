@@ -27,6 +27,6 @@ class ProductsModelTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('product_model')->insert($models);
+        DB::table('product_models')->insert($models);
     }
 }
