@@ -1,15 +1,18 @@
 import Vue from 'vue';
-
-// import App from './pages/App'
-import Layout from './layouts/Layout'
-
-
+// importing layouts
+import Default from './layouts/Default'
+import Admin from './layouts/Admin'
+// importing router and store
 import router from './router';
-
+import store from './store';
 
 const app = new Vue({
     el: '#app',
-    components: { Layout },
-    name: 'Layout',
+    components: {
+        Default,
+        Admin
+    },
     router,
+    store,
+    template: '<router-view></router-view>'
 });

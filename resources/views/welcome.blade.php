@@ -9,10 +9,7 @@
         <link href="css/app.css" rel="stylesheet">
     </head>
     <body>
-        <div id="app">
-        <Layout >
-        <Layout />
-        </div>
+        <div id="app"></div>
         <script src="js/bootstrap.js"></script>
         <script src="js/app.js"></script>
     </body>

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-3">
-        <Drawer />
+<!--        <Drawer />-->
       </div>
       <div class="col-9">
         <div class="row">
@@ -31,7 +31,7 @@ export default {
         // BreadCrumbs
     },
     mounted() {
-        axios.get("api/products/").then(response => this.products = response.data)      
+        axios.get("api/products/").then(response => this.products = response.data)
     },
   data() {
     return {
