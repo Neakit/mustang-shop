@@ -20,6 +20,10 @@ use Illuminate\Http\Request;
 Route::post('login', 'UserController@login');
 Route::post('register', 'UserController@register');
 Route::get('/products', 'ProductController@index');
+Route::post('/product', 'ProductController@getProducts');
+
+Route::get('/categories', 'CategoryController@index');
+Route::get('/models', 'ProductModelController@index');
 Route::post('/upload-file', 'ProductController@uploadFile');
 Route::get('/products/{product}', 'ProductController@show');
 Route::post('/product', 'ProductController@filterProducts');
