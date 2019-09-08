@@ -31,14 +31,14 @@
         methods : {
             setDefaults() {
                 if (this.isLoggedIn) {
-                    let user = JSON.parse(localStorage.getItem('bigStore.user'))
-                    this.name = user.name
-                    this.user_type = user.is_admin
+                    let user = JSON.parse(localStorage.getItem('bigStore.user'));
+                    this.name = user.name;
+                    this.user_type = user.is_admin;
                 }
             },
             change() {
-                this.isLoggedIn = localStorage.getItem('bigStore.jwt') != null
-                this.setDefaults()
+                this.isLoggedIn = localStorage.getItem('bigStore.jwt') != null;
+                this.setDefaults();
             },
             logout(){
                 localStorage.removeItem('bigStore.jwt')

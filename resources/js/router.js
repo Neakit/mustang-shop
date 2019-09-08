@@ -62,10 +62,10 @@ const router = new VueRouter({
             path: '/admin',
             name: 'admin',
             component: Admin,
-            // meta: {
-            //     requiresAuth: true,
-            //     is_admin: true
-            // }
+            meta: {
+                requiresAuth: true,
+                is_admin: true
+            }
         },
 
 

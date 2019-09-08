@@ -20450,11 +20450,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   }, {
     path: '/admin',
     name: 'admin',
-    component: _layouts_Admin__WEBPACK_IMPORTED_MODULE_9__["default"] // meta: {
-    //     requiresAuth: true,
-    //     is_admin: true
-    // }
-
+    component: _layouts_Admin__WEBPACK_IMPORTED_MODULE_9__["default"],
+    meta: {
+      requiresAuth: true,
+      is_admin: true
+    }
   }]
 }); //
 // router.beforeEach((to, from, next) => {
