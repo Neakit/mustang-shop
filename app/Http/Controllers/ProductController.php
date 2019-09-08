@@ -60,7 +60,10 @@ class ProductController extends Controller
         ]);
     }
 
-
+    public function getProducts(Request $request) 
+    {
+        dd($request);
+    }
 
     public function uploadFile(Request $request)
     {
