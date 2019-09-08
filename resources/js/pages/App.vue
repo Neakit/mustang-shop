@@ -27,7 +27,8 @@
             }
         },
         mounted() {
-            this.setDefaults()
+            // this.setDefaults()
+
         },
         methods : {
             setDefaults() {

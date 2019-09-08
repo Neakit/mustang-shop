@@ -4,18 +4,19 @@
 		<img src="/icons/search-icon.svg" alt="search-icon" />
 		<input v-model="search" placeholder="Поиск" />
 	</div>
+
 	<div class="accordion" id="accordionExample">
 
 		<div v-for="(item, index) in items" :key="index">
 			<div>
 				<div :id="'headingOne' + item.title" >
 					<h2 class="mb-0">
-						<button 
-							class="btn btn-link" 
-							type="button" 
-							data-toggle="collapse" 
-							:data-target="'#collapseOne' + item.title" 
-							aria-expanded="true" 
+						<button
+							class="btn btn-link"
+							type="button"
+							data-toggle="collapse"
+							:data-target="'#collapseOne' + item.title"
+							aria-expanded="true"
 							aria-controls="collapseOne"
 						>
 							{{ item.title }}
@@ -23,16 +24,16 @@
 					</h2>
 				</div>
 
-				<div 
-					:id="'collapseOne' + item.title" 
-					class="collapse" 
-					:aria-labelledby="'headingOne' + item.title" 
+				<div
+					:id="'collapseOne' + item.title"
+					class="collapse"
+					:aria-labelledby="'headingOne' + item.title"
 					data-parent="#accordionExample"
 				>
-					<div 
-						class="card-body" 
+					<div
+						class="card-body"
 						v-for="(category, index) in item.categories"
-						:key="index"	
+						:key="index"
 						@click="fetchProducts({ model_id: item.id, category_id: category.id })"
 					>
 						{{ category.title }}
@@ -45,14 +46,17 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex';
+
 export default {
 	mounted() {
-        axios.get("api/categories/").then(response => { 
+        this.$axios.get("api/categories/").then(response => {
 			return this.categories = response.data
-		})
-        axios.get("api/models/").then(response => { 
+		});
+        this.$axios.get("api/models/").then(response => {
 			return this.models = response.data
-		})
+		});
+
 	},
 	computed: {
 		items(){
@@ -63,6 +67,7 @@ export default {
 		}
 	},
 	methods: {
+        ...mapActions(['getProducts']),
 		fetchProducts(data){
 			const { model_id, category_id } = data;
 			console.log(model_id, category_id)
@@ -76,7 +81,7 @@ export default {
 			search: '',
 			categories: [],
 			models: []
-        }  
+        }
     }
 }
 </script>

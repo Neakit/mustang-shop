@@ -12,15 +12,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        $newproducts = $products->map(function ($user) {
+        $query = $request->all();
+        $search_params = array_map(function($key, $value){
+            if(isset($key) && $key === 'value') {
+                return ["title", 'like', "%{$value}%"];
+            }
+            if(isset($key)) {
+                return ["{$key}", '=', "{$value}"];
+            };
+        }, array_keys($query), $query);
+
+        $results = Product::where($search_params)->paginate(9);
+
+        $results->map(function ($user) {
             $user->category = $user->category;
             $user->model = $user->model;
             return $user;
         });
-        return response()->json($newproducts, 200);
+        return response()->json($results, 200);
     }
 
     /**
@@ -60,7 +71,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getProducts(Request $request) 
+    public function getProducts(Request $request)
     {
         dd($request);
     }

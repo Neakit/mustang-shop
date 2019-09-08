@@ -11,7 +11,7 @@
 						<div></div>
 					</div>
 					<div class="col-4" v-for="(card, index) in products" :key="index">
-						<ProductCard :card="card" />
+<!--						<ProductCard :card="card" />-->
 					</div>
 				</div>
 			</div>
@@ -36,66 +36,15 @@ export default {
             return this.products = response.data
         })
     },
-  data() {
-    return {
-        products: [],
-      cards: [
-        {
-          imgSrc: '/images/productCards/1.jpg',
-          title: 'Двигатель MERSEDES OM 904 LA 2-я комплектация',
-          model: 'OM905LA',
-          id: 35634,
-          price: 17000,
-          currency: 'RUB',
-          status: 'б/у'
-        },
-        {
-          imgSrc: '/images/productCards/2.jpg',
-          title: 'Двигатель ',
-          model: 'OM905LA',
-          id: 25887,
-          price: 117320,
-          currency: 'RUB',
-          status: 'новый      '
-        },
-        {
-          imgSrc: '/images/productCards/3.jpg',
-          title: 'Фара левая с регулирующим мотором',
-          model: '68416516351',
-          id: 548732,
-          price: 7160,
-          currency: 'RUB',
-          status: 'б/у'
-        },
-        {
-          imgSrc: '/images/productCards/1.jpg',
-          title: 'Двигатель MERSEDES OM 904 LA 2-я комплектация',
-          model: 'OM905LA',
-          id: 35634,
-          price: 17000,
-          currency: 'RUB',
-          status: 'б/у'
-        },
-        {
-          imgSrc: '/images/productCards/2.jpg',
-          title: 'Двигатель MERSEDES OM 904',
-          model: 'OM905LA',
-          id: 25887,
-          price: 117320,
-          currency: 'RUB',
-          status: 'новый      '
-        },
-        {
-          imgSrc: '/images/productCards/3.jpg',
-          title: 'Фара левая с регулирующим мотором',
-          model: '68416516351',
-          id: 548732,
-          price: 7160,
-          currency: 'RUB',
-          status: 'б/у'
+    methods: {
+        search(){
+
         }
-      ]
+    },
+    data() {
+        return {
+            products: []
+        }
     }
-  }
 }
 </script>

@@ -6,6 +6,9 @@ import Admin from './layouts/Admin'
 import router from './router';
 import store from './store';
 
+import axios from 'axios';
+Vue.prototype.$axios = axios;
+
 const app = new Vue({
     el: '#app',
     components: {
