@@ -15,13 +15,11 @@ class ProductsModelTableSeeder extends Seeder
         $models = [
             [
                 'title' => 'Actros',
-                'model_id' => 1,
                 'created_at' => new DateTime,
                 'updated_at' => null,
             ],
             [
                 'title' => 'Axor',
-                'model_id' => 2,
                 'created_at' => new DateTime,
                 'updated_at' => null,
             ]

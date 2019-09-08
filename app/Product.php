@@ -19,7 +19,7 @@ class Product extends Model
     protected $hidden = [
         'category_id',
         'currency_id',
-        'model_id',
+        'product_model_id',
         'status_id',
         'deleted_at',
         'updated_at'
@@ -32,6 +32,6 @@ class Product extends Model
 
     public function model()
     {
-        return $this->belongsTo(ProductModel::class, 'model_id', 'model_id');
+        return $this->belongsTo(ProductModel::class);
     }
 }
