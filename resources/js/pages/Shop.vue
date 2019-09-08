@@ -23,6 +23,7 @@
 import ProductCard from '../components/ProductCard.vue'
 import Drawer from '../components/Drawer.vue'
 // import BreadCrumbs from '..components/BreadCrumbs.vue'
+import axios from 'axios';
 
 export default {
     components: {
@@ -31,7 +32,9 @@ export default {
         // BreadCrumbs
     },
     mounted() {
-        axios.get("api/products/").then(response => this.products = response.data)
+        axios.get("api/products/").then(response => {
+            return this.products = response.data
+        })
     },
   data() {
     return {

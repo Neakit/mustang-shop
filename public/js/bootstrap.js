@@ -36823,7 +36823,7 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\js\bootstrap.js */"./resources/js/bootstrap.js");
+module.exports = __webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/js/bootstrap.js */"./resources/js/bootstrap.js");
 
 
 /***/ })
