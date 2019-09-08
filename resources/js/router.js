@@ -15,6 +15,8 @@ import Admin from './layouts/Admin';
 
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
+import Products from './pages/admin/Products';
+
 import SingleProduct from './pages/SingleProduct';
 import Checkout from './pages/Checkout';
 // import Admin from './pages/Admin';
@@ -61,9 +63,9 @@ const router = new VueRouter({
         {
             path: '/admin',
             component: Admin,
-            meta: {
-                requiresAuth: true
-            },
+            // meta: {
+            //     requiresAuth: true
+            // },
             children: [
                 {
                     path: 'login',
@@ -74,16 +76,20 @@ const router = new VueRouter({
                     path: 'dashboard',
                     name: 'dashboard',
                     component: Dashboard,
-                    meta: {
-                        requiresAuth: true
-                    }
+                    // meta: {
+                    //     requiresAuth: true
+                    // }
                 },
                 {
                     path: 'products/:id',
                     name: 'single-products',
                     component: SingleProduct
                 },
-
+                {
+                    path: 'products',
+                    name: 'products',
+                    component: Products
+                },
                 {
                     path: 'checkout',
                     name: 'checkout',
@@ -105,7 +111,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    debugger
+    // debugger
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // if no token
         if (localStorage.getItem('bigStore.jwt') === null) {
