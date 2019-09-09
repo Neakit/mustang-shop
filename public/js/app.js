@@ -1970,6 +1970,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['product'],
@@ -1981,6 +1984,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: {
     data: function data() {
       return {
+        id: this.product && this.product.id || '',
         image: this.product && this.product.image || '',
         title: this.product && this.product.title || '',
         category: this.product && this.product.category || '',
@@ -2006,34 +2010,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         axios.post("/api/upload-file", formData, {
           headers: headers
         }).then(function (response) {
-          _this.product.image = response.data;
-
-          _this.$emit('close', _this.product);
+          _this.data.image = response.data;
+          debugger; // this.$emit('close', this.product)
         });
-      } else {
-        this.$emit('close', this.product);
+      } else {// this.$emit('close', this.product)
       }
     },
-    endEditing: function endEditing(product) {
-      var _this2 = this;
-
-      this.editingItem = null;
-      var index = this.products.indexOf(product);
-      var name = product.name;
-      var units = product.units;
-      var price = product.price;
-      var description = product.description;
-      axios.put("/api/products/".concat(product.id), {
-        name: name,
-        units: units,
-        price: price,
-        description: description
-      }).then(function (response) {
-        return _this2.products[index] = product;
+    saveProduct: function saveProduct() {
+      var title = this.title;
+      var image = this.image;
+      var category = this.category;
+      var model = this.model;
+      var description = this.description;
+      var price = this.price;
+      axios.put("/api/products/".concat(this.product.id), {
+        image: image,
+        title: title,
+        category: category,
+        model: model,
+        description: description,
+        price: price
+      }).then(function (res) {
+        // this.products[index] = product 
+        console.log(res);
+        debugger;
       });
     },
     addProduct: function addProduct(product) {
-      var _this3 = this;
+      var _this2 = this;
 
       this.addingProduct = null;
       var name = product.name;
@@ -2048,7 +2052,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         description: description,
         image: image
       }).then(function (response) {
-        return _this3.products.push(product);
+        return _this2.products.push(product);
       });
     }
   })
@@ -2708,17 +2712,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['products', 'productModal'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleProductModal']), {
     addNewProduct: function addNewProduct() {
-      this.product = _defineProperty({
-        name: null,
-        units: null,
-        price: null,
+      this.product = {
+        id: null,
         image: null,
-        description: null
-      }, "description", null);
+        title: null,
+        category: null,
+        model: null,
+        description: null,
+        price: null
+      };
       this.toggleProductModal(true);
     },
     editProduct: function editProduct(product) {
       this.product = {
+        id: product.id,
         image: product.image,
         title: product.title,
         category: product.category.title,
@@ -5531,6 +5538,19 @@ var render = function() {
                 {
                   staticClass: "modal-default-button",
                   on: { click: _vm.uploadFile }
+                },
+                [
+                  _vm._v(
+                    "\n                        Upload file\n                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "modal-default-button",
+                  on: { click: _vm.saveProduct }
                 },
                 [
                   _vm._v(

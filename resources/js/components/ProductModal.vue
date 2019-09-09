@@ -28,6 +28,9 @@
                     <div class="modal-footer">
                         <slot name="footer">
                             <button class="modal-default-button" @click="uploadFile">
+                                Upload file
+                            </button>
+                            <button class="modal-default-button" @click="saveProduct">
                                 Finish
                             </button>
                         </slot>
@@ -51,6 +54,7 @@ import { mapMutations } from 'vuex';
         computed: {
             data() {
                 return {
+                    id: this.product && this.product.id || '',
                     image: this.product && this.product.image || '',
                     title: this.product && this.product.title || '',
                     category: this.product && this.product.category || '',
@@ -69,26 +73,34 @@ import { mapMutations } from 'vuex';
                 if (this.attachment != null) {
                     var formData = new FormData();
                     formData.append("image", this.attachment)
-                    let headers = {'Content-Type': 'multipart/form-data'}
-                    axios.post("/api/upload-file", formData, {headers}).then(response => {
-                        this.product.image = response.data
-                        this.$emit('close', this.product)
+                    let headers = {
+                        'Content-Type': 'multipart/form-data'
+                    }
+
+                    axios.post("/api/upload-file", formData, { headers }).then(response => {
+                        this.data.image = response.data
+                        debugger
+                        // this.$emit('close', this.product)
                     })
                 } else {
-                    this.$emit('close', this.product)
+                    // this.$emit('close', this.product)
                 }
             },
-             endEditing(product) {
-                this.editingItem = null
+            saveProduct() {
 
-                let index = this.products.indexOf(product)
-                let name = product.name
-                let units = product.units
-                let price = product.price
-                let description = product.description
+                let title = this.title
+                let image = this.image
+                let category = this.category
+                let model = this.model
+                let description = this.description
+                let price = this.price
 
-                axios.put(`/api/products/${product.id}`, {name, units, price, description})
-                     .then(response => this.products[index] = product)
+                axios.put(`/api/products/${this.product.id}`, {image, title, category, model, description, price })
+                    .then(res => { 
+                        // this.products[index] = product 
+                        console.log(res);
+                        debugger
+                    })
             },
             addProduct(product) {
                 this.addingProduct = null

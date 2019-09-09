@@ -49,18 +49,20 @@
             ...mapMutations(['toggleProductModal']),
             addNewProduct() {
                 this.product = {
-                    name: null,
-                    units: null,
-                    price: null,
+                    id: null,
                     image: null,
+                    title: null,
+                    category: null,
+                    model: null,
                     description: null,
-                    description: null,
+                    price: null,
                 }
 
                 this.toggleProductModal(true);
             },
             editProduct(product) {
                 this.product = {
+                    id: product.id,
                     image: product.image,
                     title: product.title,
                     category: product.category.title,
