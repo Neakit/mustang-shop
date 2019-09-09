@@ -67,23 +67,22 @@
              <div class="row justify-content-center col-12">
                  <nav aria-label="Page navigation example">
                      <ul class="pagination">
-                         <li class="page-item">
+                         <li class="page-item"
+                             :class="{ disabled: 1 === products.current_page }"
+                         >
                              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>
                          </li>
-
                          <li
                              v-for="(page, index) in products.last_page"
                              :key="index"
                              class="page-item"
                              :class="{ active: page === products.current_page }"
                          >
-                             <a
-                                 @click="getProductsChunk(page)"
-                                 class="page-link"
-                             >{{ page }}</a>
+                             <a @click="getProductsPage(page)" class="page-link">{{ page }}</a>
                          </li>
-
-                         <li class="page-item">
+                         <li class="page-item"
+                             :class="{ disabled:  products.current_page === products.last_page }"
+                         >
                              <a class="page-link" href="#">Далее</a>
                          </li>
                      </ul>
@@ -134,11 +133,9 @@
                 this.title = "";
                 this.getProducts();
             },
-            // getProductsChunk(page) {
-            //     this.$axios.get('http://127.0.0.1:8001/api/products?title=MERSEDES&category_id=1').then(res => {
-            //         console.log('res', res);
-            //     })
-            // },
+            getProductsPage(page) {
+                this.getProducts({ params: { page } });
+            },
             addNewProduct() {
                 this.product = {
                     id: null,

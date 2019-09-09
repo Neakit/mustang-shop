@@ -2760,7 +2760,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2793,11 +2792,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.title = "";
       this.getProducts();
     },
-    // getProductsChunk(page) {
-    //     this.$axios.get('http://127.0.0.1:8001/api/products?title=MERSEDES&category_id=1').then(res => {
-    //         console.log('res', res);
-    //     })
-    // },
+    getProductsPage: function getProductsPage(page) {
+      this.getProducts({
+        params: {
+          page: page
+        }
+      });
+    },
     addNewProduct: function addNewProduct() {
       this.product = {
         id: null,
@@ -6759,7 +6760,27 @@ var render = function() {
             "ul",
             { staticClass: "pagination" },
             [
-              _vm._m(1),
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: { disabled: 1 === _vm.products.current_page }
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: {
+                        href: "#",
+                        tabindex: "-1",
+                        "aria-disabled": "true"
+                      }
+                    },
+                    [_vm._v("Назад")]
+                  )
+                ]
+              ),
               _vm._v(" "),
               _vm._l(_vm.products.last_page, function(page, index) {
                 return _c(
@@ -6776,7 +6797,7 @@ var render = function() {
                         staticClass: "page-link",
                         on: {
                           click: function($event) {
-                            return _vm.getProductsChunk(page)
+                            return _vm.getProductsPage(page)
                           }
                         }
                       },
@@ -6786,7 +6807,21 @@ var render = function() {
                 )
               }),
               _vm._v(" "),
-              _vm._m(2)
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: {
+                    disabled:
+                      _vm.products.current_page === _vm.products.last_page
+                  }
+                },
+                [
+                  _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+                    _vm._v("Далее")
+                  ])
+                ]
+              )
             ],
             2
           )
@@ -6815,31 +6850,6 @@ var staticRenderFns = [
         _c("td", [_vm._v("Цена")]),
         _vm._v(" "),
         _c("td")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c(
-        "a",
-        {
-          staticClass: "page-link",
-          attrs: { href: "#", tabindex: "-1", "aria-disabled": "true" }
-        },
-        [_vm._v("Назад")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-        _vm._v("Далее")
       ])
     ])
   }
