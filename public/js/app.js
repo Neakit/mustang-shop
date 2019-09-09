@@ -6795,6 +6795,7 @@ var render = function() {
                       "a",
                       {
                         staticClass: "page-link",
+                        attrs: { href: "#" },
                         on: {
                           click: function($event) {
                             return _vm.getProductsPage(page)

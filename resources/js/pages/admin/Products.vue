@@ -78,7 +78,7 @@
                              class="page-item"
                              :class="{ active: page === products.current_page }"
                          >
-                             <a @click="getProductsPage(page)" class="page-link">{{ page }}</a>
+                             <a @click="getProductsPage(page)" class="page-link" href="#">{{ page }}</a>
                          </li>
                          <li class="page-item"
                              :class="{ disabled:  products.current_page === products.last_page }"
