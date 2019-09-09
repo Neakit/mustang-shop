@@ -29,9 +29,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="container">
-            <router-view></router-view>
-        </div>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -46,16 +44,16 @@
         },
         computed: {
             ...mapGetters([
-                'products', 
-                'categories', 
-                'models', 
+                'products',
+                'categories',
+                'models',
                 'user'
             ])
         },
         methods: {
             ...mapActions([
-                'getProducts', 
-                'getModels', 
+                'getProducts',
+                'getModels',
                 'getCategories'
             ])
         }

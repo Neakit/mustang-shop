@@ -8,14 +8,24 @@
                     </div>
                     <div class="modal-body">
                         <slot name="body">
-                            title: <input type="text" v-model="data.title">
-                            model: <input type="text" v-model="data.model">
-
-                            category: <input type="text" v-model="data.category">
-                            currency: <input type="text" v-model="data.currency">
-                            price: <input type="number" v-model="data.price">
-
-                            status: <input type="text" v-model="data.status">
+                            <div>
+                                title: <input type="text" v-model="data.title">
+                            </div>
+                            <div>
+                                model: <input type="text" v-model="data.model.title">
+                            </div>
+                            <div>
+                                category: <input type="text" v-model="data.category.title">
+                            </div>
+                            <div>
+                                currency: <input type="text" v-model="data.currency">
+                            </div>
+                            <div>
+                                price: <input type="number" v-model="data.price">
+                            </div>
+                            <div>
+                                status: <input type="text" v-model="data.status">
+                            </div>
 
                             <textarea v-model="data.description" placeholder="description"></textarea>
 
@@ -43,7 +53,7 @@
 
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
     export default {
         props: ['product'],
         data() {
@@ -57,8 +67,8 @@ import { mapMutations } from 'vuex';
                     id: this.product && this.product.id || '',
                     image: this.product && this.product.image || '',
                     title: this.product && this.product.title || '',
-                    category: this.product && this.product.category || '',
-                    model: this.product && this.product.model || '',
+                    category: this.product && this.product.category.id || '',
+                    model: this.product && this.product.model.id || '',
                     description: this.product && this.product.description || '',
                     price: this.product && this.product.price || ''
                 }
@@ -66,6 +76,7 @@ import { mapMutations } from 'vuex';
         },
         methods: {
             ...mapMutations(['toggleProductModal']),
+            ...mapActions(['updateProduct']),
             attachFile(event) {
                 this.attachment = event.target.files[0];
             },
@@ -87,20 +98,15 @@ import { mapMutations } from 'vuex';
                 }
             },
             saveProduct() {
-
-                let title = this.title
-                let image = this.image
-                let category = this.category
-                let model = this.model
-                let description = this.description
-                let price = this.price
-
-                axios.put(`/api/products/${this.product.id}`, {image, title, category, model, description, price })
-                    .then(res => { 
-                        // this.products[index] = product 
-                        console.log(res);
-                        debugger
-                    })
+                this.updateProduct({
+                    id: this.data.id,
+                    title: this.data.title,
+                    image: this.data.image,
+                    category: this.data.category,
+                    model: this.data.model,
+                    description: this.data.description,
+                    price: this.data.price
+                });
             },
             addProduct(product) {
                 this.addingProduct = null
@@ -109,7 +115,7 @@ import { mapMutations } from 'vuex';
                 let units = product.units
                 let price = product.price
                 let description = product.description
-                let image = product.image 
+                let image = product.image
 
                 axios.post("/api/products/", {name, units, price, description, image})
                      .then(response => this.products.push(product))

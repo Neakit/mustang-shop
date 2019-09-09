@@ -1973,6 +1973,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['product'],
@@ -1987,14 +1997,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: this.product && this.product.id || '',
         image: this.product && this.product.image || '',
         title: this.product && this.product.title || '',
-        category: this.product && this.product.category || '',
-        model: this.product && this.product.model || '',
+        category: this.product && this.product.category.id || '',
+        model: this.product && this.product.model.id || '',
         description: this.product && this.product.description || '',
         price: this.product && this.product.price || ''
       };
     }
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleProductModal']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleProductModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['updateProduct']), {
     attachFile: function attachFile(event) {
       this.attachment = event.target.files[0];
     },
@@ -2017,23 +2027,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     saveProduct: function saveProduct() {
-      var title = this.title;
-      var image = this.image;
-      var category = this.category;
-      var model = this.model;
-      var description = this.description;
-      var price = this.price;
-      axios.put("/api/products/".concat(this.product.id), {
-        image: image,
-        title: title,
-        category: category,
-        model: model,
-        description: description,
-        price: price
-      }).then(function (res) {
-        // this.products[index] = product 
-        console.log(res);
-        debugger;
+      this.updateProduct({
+        id: this.data.id,
+        title: this.data.title,
+        image: this.data.image,
+        category: this.data.category,
+        model: this.data.model,
+        description: this.data.description,
+        price: this.data.price
       });
     },
     addProduct: function addProduct(product) {
@@ -2076,8 +2077,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -2698,19 +2697,107 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      product: null
+      product: null,
+      category_id: "",
+      model_id: "",
+      title: ""
     };
   },
   components: {
     Modal: _components_ProductModal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['products', 'productModal'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleProductModal']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['products', 'categories', 'models', 'productModal'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleProductModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['getProducts']), {
+    filterProducts: function filterProducts() {
+      var params = {
+        title: this.title,
+        model_id: this.model_id,
+        category_id: this.category_id
+      };
+      this.getProducts({
+        params: params
+      });
+    },
+    clearFilter: function clearFilter() {
+      this.category_id = "";
+      this.model_id = "";
+      this.title = "";
+      this.getProducts();
+    },
+    // getProductsChunk(page) {
+    //     this.$axios.get('http://127.0.0.1:8001/api/products?title=MERSEDES&category_id=1').then(res => {
+    //         console.log('res', res);
+    //     })
+    // },
     addNewProduct: function addNewProduct() {
       this.product = {
         id: null,
@@ -2728,8 +2815,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: product.id,
         image: product.image,
         title: product.title,
-        category: product.category.title,
-        model: product.model.title,
+        category: product.category,
+        model: product.model,
         description: product.description,
         price: product.price
       };
@@ -2771,7 +2858,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.menu-item {\r\n  background-color: #cf6100;\r\n  color: #fff;\r\n  text-transform: uppercase;\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-size: 16px;\r\n  text-align: center;\r\n  padding: 16px;\r\n  cursor: pointer;\n}\n.menu-item__active {\r\n  background-color: #f17100;\n}\r\n", ""]);
+exports.push([module.i, "\n.menu-item {\n  background-color: #cf6100;\n  color: #fff;\n  text-transform: uppercase;\n  font-family: 'PT Sans', sans-serif;\n  font-size: 16px;\n  text-align: center;\n  padding: 16px;\n  cursor: pointer;\n}\n.menu-item__active {\n  background-color: #f17100;\n}\n", ""]);
 
 // exports
 
@@ -2790,7 +2877,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-title[data-v-1a457ff8] {\r\n  font-size: 18px;\r\n  font-family: 'PT Sans', sans-serif;\n}\n.card-model[data-v-1a457ff8] {\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-size: 12px;\r\n  color: #212121;\n}\n.btn[data-v-1a457ff8] {\r\n  background-color: #cf6100;\r\n  color: #fff;\r\n  border-radius: 0;\r\n  width: 116px;\r\n  height: 38px;\n}\n.price[data-v-1a457ff8] {\r\n  margin-top: 28px;\n}\n.card[data-v-1a457ff8] {\r\n  min-height: 420px;\r\n  margin: 6px 0;\r\n  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);\n}\n.card-body[data-v-1a457ff8] {\r\n  display: flex;\r\n  flex-direction: column;\r\n  justify-content: space-between;\n}\n.card-status[data-v-1a457ff8] {\r\n  font-size: 12px;\n}\n.card-price[data-v-1a457ff8] {\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-weight: 600;\r\n  font-size: 16px;\n}\r\n", ""]);
+exports.push([module.i, "\n.card-title[data-v-1a457ff8] {\n  font-size: 18px;\n  font-family: 'PT Sans', sans-serif;\n}\n.card-model[data-v-1a457ff8] {\n  font-family: 'PT Sans', sans-serif;\n  font-size: 12px;\n  color: #212121;\n}\n.btn[data-v-1a457ff8] {\n  background-color: #cf6100;\n  color: #fff;\n  border-radius: 0;\n  width: 116px;\n  height: 38px;\n}\n.price[data-v-1a457ff8] {\n  margin-top: 28px;\n}\n.card[data-v-1a457ff8] {\n  min-height: 420px;\n  margin: 6px 0;\n  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);\n}\n.card-body[data-v-1a457ff8] {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n.card-status[data-v-1a457ff8] {\n  font-size: 12px;\n}\n.card-price[data-v-1a457ff8] {\n  font-family: 'PT Sans', sans-serif;\n  font-weight: 600;\n  font-size: 16px;\n}\n", ""]);
 
 // exports
 
@@ -5356,132 +5443,149 @@ var render = function() {
           { staticClass: "modal-body" },
           [
             _vm._t("body", [
-              _vm._v("\n                    title: "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.title,
-                    expression: "data.title"
-                  }
-                ],
-                attrs: { type: "text" },
-                domProps: { value: _vm.data.title },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c("div", [
+                _vm._v("\n                        title: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.title,
+                      expression: "data.title"
                     }
-                    _vm.$set(_vm.data, "title", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v("\n                    model: "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.model,
-                    expression: "data.model"
-                  }
-                ],
-                attrs: { type: "text" },
-                domProps: { value: _vm.data.model },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.data.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data, "title", $event.target.value)
                     }
-                    _vm.$set(_vm.data, "model", $event.target.value)
                   }
-                }
-              }),
-              _vm._v("\n\n                    category: "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.category,
-                    expression: "data.category"
-                  }
-                ],
-                attrs: { type: "text" },
-                domProps: { value: _vm.data.category },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("\n                        model: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.model.title,
+                      expression: "data.model.title"
                     }
-                    _vm.$set(_vm.data, "category", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v("\n                    currency: "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.currency,
-                    expression: "data.currency"
-                  }
-                ],
-                attrs: { type: "text" },
-                domProps: { value: _vm.data.currency },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.data.model.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data.model, "title", $event.target.value)
                     }
-                    _vm.$set(_vm.data, "currency", $event.target.value)
                   }
-                }
-              }),
-              _vm._v("\n                    price: "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.price,
-                    expression: "data.price"
-                  }
-                ],
-                attrs: { type: "number" },
-                domProps: { value: _vm.data.price },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("\n                        category: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.category.title,
+                      expression: "data.category.title"
                     }
-                    _vm.$set(_vm.data, "price", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v("\n\n                    status: "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.data.status,
-                    expression: "data.status"
-                  }
-                ],
-                attrs: { type: "text" },
-                domProps: { value: _vm.data.status },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.data.category.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data.category, "title", $event.target.value)
                     }
-                    _vm.$set(_vm.data, "status", $event.target.value)
                   }
-                }
-              }),
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("\n                        currency: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.currency,
+                      expression: "data.currency"
+                    }
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.data.currency },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data, "currency", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("\n                        price: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.price,
+                      expression: "data.price"
+                    }
+                  ],
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.data.price },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data, "price", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("\n                        status: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.status,
+                      expression: "data.status"
+                    }
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.data.status },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data, "status", $event.target.value)
+                    }
+                  }
+                })
+              ]),
               _vm._v(" "),
               _c("textarea", {
                 directives: [
@@ -5588,95 +5692,106 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "nav",
-      { staticClass: "navbar navbar-expand-sm navbar-light bg-light" },
-      [
-        _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-          _vm._v("Navbar")
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "collapse navbar-collapse",
-            attrs: { id: "navbarSupportedContent" }
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-              _c(
-                "li",
-                { staticClass: "nav-item active" },
-                [
-                  _c(
-                    "router-link",
-                    { staticClass: "nav-link", attrs: { to: "/admin" } },
-                    [
-                      _vm._v("Admin Hhome"),
-                      _c("span", { staticClass: "sr-only" }, [
-                        _vm._v("Home admin")
-                      ])
-                    ]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "nav-item" },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { to: "/admin/products" }
-                    },
-                    [_vm._v("Продукты: " + _vm._s(_vm.products.length || 0))]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "nav-item" },
-                [
-                  _c(
-                    "router-link",
-                    { staticClass: "nav-link", attrs: { to: "/admin/models" } },
-                    [_vm._v("Модели: " + _vm._s(_vm.models.length || 0))]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "nav-item" },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { to: "/admin/categories" }
-                    },
-                    [_vm._v("Категории: " + _vm._s(_vm.categories.length || 0))]
-                  )
-                ],
-                1
-              )
-            ])
-          ]
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "container" }, [_c("router-view")], 1)
-  ])
+  return _c(
+    "div",
+    [
+      _c(
+        "nav",
+        { staticClass: "navbar navbar-expand-sm navbar-light bg-light" },
+        [
+          _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
+            _vm._v("Navbar")
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "collapse navbar-collapse",
+              attrs: { id: "navbarSupportedContent" }
+            },
+            [
+              _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+                _c(
+                  "li",
+                  { staticClass: "nav-item active" },
+                  [
+                    _c(
+                      "router-link",
+                      { staticClass: "nav-link", attrs: { to: "/admin" } },
+                      [
+                        _vm._v("Admin Hhome"),
+                        _c("span", { staticClass: "sr-only" }, [
+                          _vm._v("Home admin")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { to: "/admin/products" }
+                      },
+                      [_vm._v("Продукты: " + _vm._s(_vm.products.length || 0))]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { to: "/admin/models" }
+                      },
+                      [_vm._v("Модели: " + _vm._s(_vm.models.length || 0))]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { to: "/admin/categories" }
+                      },
+                      [
+                        _vm._v(
+                          "Категории: " + _vm._s(_vm.categories.length || 0)
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("router-view")
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -6408,66 +6523,277 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", on: { click: _vm.addNewProduct } },
-        [_vm._v("Добавить новый продукт")]
-      ),
-      _vm._v(" "),
-      _c("table", { staticClass: "table table-responsive table-striped" }, [
-        _vm._m(0),
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-2" }, [
+        _c(
+          "div",
+          { staticClass: "alert alert-primary", attrs: { role: "alert" } },
+          [_vm._v("\n                Фильтр продуктов\n            ")]
+        ),
+        _vm._v(" "),
+        _c("form", [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+              _vm._v("Название:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "exampleFormControlInput1" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "exampleFormControlSelect1" } }, [
+              _vm._v("Категория:")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.category_id,
+                    expression: "category_id"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "exampleFormControlSelect1" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.category_id = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Выберите категорию")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.categories, function(item, index) {
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: item.id } },
+                    [_vm._v(_vm._s(item.title))]
+                  )
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "exampleFormControlSelect1" } }, [
+              _vm._v("Модель:")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model_id,
+                    expression: "model_id"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "exampleFormControlSelect1" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.model_id = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Выберите модель")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.models, function(item, index) {
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: item.id } },
+                    [_vm._v(_vm._s(item.title))]
+                  )
+                })
+              ],
+              2
+            )
+          ])
+        ]),
         _vm._v(" "),
         _c(
-          "tbody",
-          _vm._l(_vm.products, function(product, index) {
-            return _c("tr", { key: index }, [
-              _c("td", [_vm._v(_vm._s(product.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.title))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.category.title))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.model.title))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.description))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.price) + " RUB")]),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.editProduct(product)
-                    }
-                  }
-                },
-                [_vm._v("Редактировать")]
-              )
-            ])
-          }),
-          0
+          "button",
+          {
+            staticClass: "btn btn-warning btn-block",
+            on: { click: _vm.clearFilter }
+          },
+          [_vm._v("Очистить фильтр")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-block",
+            on: { click: _vm.filterProducts }
+          },
+          [_vm._v("Поиск")]
         )
       ]),
       _vm._v(" "),
-      _c("modal", {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.productModal,
-            expression: "productModal"
-          }
+      _c(
+        "div",
+        { staticClass: "row col-8" },
+        [
+          _c("table", { staticClass: "table table-responsive table-striped" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.products.data, function(product, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(_vm._s(product.id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.category.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.model.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.description))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.price) + " RUB")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-warning",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.editProduct(product)
+                          }
+                        }
+                      },
+                      [_vm._v("Редактировать")]
+                    )
+                  ])
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("modal", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.productModal,
+                expression: "productModal"
+              }
+            ],
+            attrs: { product: _vm.product }
+          })
         ],
-        attrs: { product: _vm.product }
-      })
-    ],
-    1
-  )
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-2 align-content-start" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-block",
+            on: { click: _vm.addNewProduct }
+          },
+          [_vm._v("Добавить новый продукт")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row justify-content-center col-12" }, [
+        _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+          _c(
+            "ul",
+            { staticClass: "pagination" },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _vm._l(_vm.products.last_page, function(page, index) {
+                return _c(
+                  "li",
+                  {
+                    key: index,
+                    staticClass: "page-item",
+                    class: { active: page === _vm.products.current_page }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "page-link",
+                        on: {
+                          click: function($event) {
+                            return _vm.getProductsChunk(page)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(page))]
+                    )
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._m(2)
+            ],
+            2
+          )
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -6476,7 +6802,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("td"),
+        _c("td", [_vm._v("#")]),
         _vm._v(" "),
         _c("td", [_vm._v("Продукт")]),
         _vm._v(" "),
@@ -6486,7 +6812,34 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("td", [_vm._v("Описание")]),
         _vm._v(" "),
-        _c("td", [_vm._v("Цена")])
+        _c("td", [_vm._v("Цена")]),
+        _vm._v(" "),
+        _c("td")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "page-item" }, [
+      _c(
+        "a",
+        {
+          staticClass: "page-link",
+          attrs: { href: "#", tabindex: "-1", "aria-disabled": "true" }
+        },
+        [_vm._v("Назад")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "page-item" }, [
+      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+        _vm._v("Далее")
       ])
     ])
   }
@@ -23972,35 +24325,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
 
+ // axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+//
+// /**
+//  * Next we will register the CSRF Token as a common header with Axios so that
+//  * all outgoing HTTP requests automatically have it attached. This is just
+//  * a simple convenience so we don't have to attach every token manually.
+//  */
+//
+// let token = document.head.querySelector('meta[name="csrf-token"]');
+//
+// if (token) {
+//     axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+// } else {
+//     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+// }
+//
+// axios.baseURL = '';
 
-axios__WEBPACK_IMPORTED_MODULE_3___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
-
-var token = document.head.querySelector('meta[name="csrf-token"]');
-
-if (token) {
-  axios__WEBPACK_IMPORTED_MODULE_3___default.a.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
-
-axios__WEBPACK_IMPORTED_MODULE_3___default.a.baseURL = '';
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   state: {
     auth: false,
     user: [],
-    products: [],
+    products: {},
     categories: [],
     models: [],
     productModal: false
@@ -24029,6 +24389,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     setProducts: function setProducts(state, payload) {
       state.products = payload;
     },
+    setProductsPagination: function setProductsPagination(state, payload) {
+      state.productsPagination = payload;
+    },
     setModels: function setModels(state, payload) {
       state.models = payload;
     },
@@ -24043,32 +24406,43 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     }
   },
   actions: {
-    getProducts: function () {
-      var _getProducts = _asyncToGenerator(
+    // axios.get(`api/users/${this.user.id}/orders`)
+    //     .then(response => this.orders = response.data)
+    //
+    // axios.put(`/api/products/${this.product.id}`, {image, title, category, model, description, price })
+    //     .then(res => {
+    //         // this.products[index] = product
+    //         console.log(res);
+    //     debugger
+    // })
+    updateProduct: function () {
+      var _updateProduct = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref, payload) {
-        var commit, params, _ref2, data;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref, product) {
+        var commit, token, _ref2, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
-                params = payload && payload.params || {};
+                token = localStorage.getItem('bigStore.jwt');
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
-                  method: 'get',
-                  url: 'api/products/',
-                  params: params
+                  url: "/api/products/".concat(product.id),
+                  method: 'put',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  },
+                  data: _objectSpread({}, product)
                 });
 
               case 4:
                 _ref2 = _context.sent;
                 data = _ref2.data;
-                commit('setProducts', data.data);
 
-              case 7:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -24076,36 +24450,38 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee);
       }));
 
-      function getProducts(_x, _x2) {
-        return _getProducts.apply(this, arguments);
+      function updateProduct(_x, _x2) {
+        return _updateProduct.apply(this, arguments);
       }
 
-      return getProducts;
+      return updateProduct;
     }(),
-    getModels: function () {
-      var _getModels = _asyncToGenerator(
+    getProducts: function () {
+      var _getProducts = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref3) {
-        var commit, _ref4, data;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref3, payload) {
+        var commit, params, _ref4, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 commit = _ref3.commit;
-                _context2.next = 3;
+                params = payload && payload.params || {};
+                _context2.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
+                  baseURL: 'http://127.0.0.1:8001/',
                   method: 'get',
-                  url: 'api/models/'
+                  url: 'api/products/',
+                  params: params
                 });
 
-              case 3:
+              case 4:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                commit('setModels', data);
+                commit('setProducts', data);
 
-              case 6:
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -24113,14 +24489,14 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee2);
       }));
 
-      function getModels(_x3) {
-        return _getModels.apply(this, arguments);
+      function getProducts(_x3, _x4) {
+        return _getProducts.apply(this, arguments);
       }
 
-      return getModels;
+      return getProducts;
     }(),
-    getCategories: function () {
-      var _getCategories = _asyncToGenerator(
+    getModels: function () {
+      var _getModels = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref5) {
         var commit, _ref6, data;
@@ -24132,15 +24508,15 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
                 commit = _ref5.commit;
                 _context3.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
+                  baseURL: 'http://127.0.0.1:8001/',
                   method: 'get',
-                  url: 'api/categories/'
+                  url: 'api/models/'
                 });
 
               case 3:
                 _ref6 = _context3.sent;
                 data = _ref6.data;
-                commit('setCategories', data);
+                commit('setModels', data);
 
               case 6:
               case "end":
@@ -24150,7 +24526,44 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee3);
       }));
 
-      function getCategories(_x4) {
+      function getModels(_x5) {
+        return _getModels.apply(this, arguments);
+      }
+
+      return getModels;
+    }(),
+    getCategories: function () {
+      var _getCategories = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(_ref7) {
+        var commit, _ref8, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                commit = _ref7.commit;
+                _context4.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default()({
+                  baseURL: 'http://127.0.0.1:8001/',
+                  method: 'get',
+                  url: 'api/categories/'
+                });
+
+              case 3:
+                _ref8 = _context4.sent;
+                data = _ref8.data;
+                commit('setCategories', data);
+
+              case 6:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function getCategories(_x6) {
         return _getCategories.apply(this, arguments);
       }
 
@@ -24179,8 +24592,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

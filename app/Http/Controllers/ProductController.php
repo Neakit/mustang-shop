@@ -14,23 +14,26 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $request->all();
-        $search_params = array_map(function($key, $value){
-            if(isset($key) && $key === 'value') {
-                return ["title", 'like', "%{$value}%"];
-            }
-            if(isset($key)) {
-                return ["{$key}", '=', "{$value}"];
-            };
-        }, array_keys($query), $query);
+        $results = Product::with(['category', 'model'])
+            ->where(function($q) use ($request){
+                if(isset($request->title)){
+                    $q->where('title', 'like', "%{$request->title}%");
+                }
+//                if(isset($request->title)){
+//                    $q->where('title', 'like', "%{$request->title}%");
+//                }
 
-        $results = Product::where($search_params)->paginate(9);
+            })->whereHas('category', function($q) use ($request){
+                /* if(isset($request->category_title)){
+                     $q->where('title', 'like', "%{$request->category_title}%");
+                 }*/
+                 if(isset($request->category_id)){
+                     $q->where('category_id', '=', $request->category_id);
+                 }
+            })->paginate(9);
+//        $results->appends($search_params)->links();
 
-        $results->map(function ($user) {
-            $user->category = $user->category;
-            $user->model = $user->model;
-            return $user;
-        });
+
         return response()->json($results, 200);
     }
 
