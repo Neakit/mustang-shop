@@ -29,6 +29,7 @@ export default new Vuex.Store({
             products: {},
             categories: [],
             models: [],
+            statuses: [],
             productModal: false
         },
         getters: {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
             },
             models(state) {
                 return state.models;
+            },
+            statuses(state) {
+                return state.statuses;
             },
             user(state) {
                 return state.user;
@@ -63,6 +67,9 @@ export default new Vuex.Store({
             },
             setCategories(state, payload) {
                 state.categories = payload;
+            },
+            setStatuses(state, payload) {
+                state.statuses = payload;
             },
             setUser(state, payload) {
                 state.user = payload;
@@ -103,7 +110,7 @@ export default new Vuex.Store({
             async getProducts({ commit }, payload) {
                 const params = payload && payload.params || {};
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8001/',
+                    baseURL: 'http://127.0.0.1:8000/',
                     method: 'get',
                     url: 'api/products/',
                     params
@@ -112,7 +119,7 @@ export default new Vuex.Store({
             },
             async getModels({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8001/',
+                    baseURL: 'http://127.0.0.1:8000/',
                     method: 'get',
                     url: 'api/models/'
                 });
@@ -120,11 +127,19 @@ export default new Vuex.Store({
             },
             async getCategories({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8001/',
+                    baseURL: 'http://127.0.0.1:8000/',
                     method: 'get',
                     url: 'api/categories/'
                 });
                 commit('setCategories', data);
+            },
+            async getStatuses({ commit }) {
+                const { data } = await axios({
+                    baseURL: 'http://127.0.0.1:8000/',
+                    method: 'get',
+                    url: 'api/statuses/'
+                });
+                commit('setStatuses', data);
             }
         }
     }

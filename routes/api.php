@@ -24,6 +24,7 @@ Route::post('/product', 'ProductController@getProducts');
 
 Route::get('/categories', 'CategoryController@index');
 Route::get('/models', 'ProductModelController@index');
+Route::get('/statuses', 'ProductStatusController@index');
 
 Route::post('/upload-file', 'ProductController@uploadFile');
 Route::get('/products/{product}', 'ProductController@show');

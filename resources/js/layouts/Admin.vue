@@ -41,6 +41,7 @@
             this.getProducts();
             this.getModels();
             this.getCategories();
+            this.getStatuses();
         },
         computed: {
             ...mapGetters([
@@ -54,7 +55,8 @@
             ...mapActions([
                 'getProducts',
                 'getModels',
-                'getCategories'
+                'getCategories',
+                'getStatuses'
             ])
         }
     }

@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $results = Product::with(['category', 'model'])
+        $results = Product::with(['category', 'model', 'status'])
             ->where(function($q) use ($request){
                 if(isset($request->title)){
                     $q->where('title', 'like', "%{$request->title}%");
