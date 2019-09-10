@@ -20,6 +20,7 @@ import Categories from './pages/admin/Categories';
 
 import SingleProduct from './pages/SingleProduct';
 import Checkout from './pages/Checkout';
+import ProductModels from "./pages/admin/ProductModels";
 // import Admin from './pages/Admin';
 
 const router = new VueRouter({
@@ -64,9 +65,7 @@ const router = new VueRouter({
         {
             path: '/admin',
             component: Admin,
-            // meta: {
-            //     requiresAuth: true
-            // },
+            redirect: '/admin/dashboard',
             children: [
                 {
                     path: 'login',
@@ -77,9 +76,9 @@ const router = new VueRouter({
                     path: 'dashboard',
                     name: 'dashboard',
                     component: Dashboard,
-                    // meta: {
-                    //     requiresAuth: true
-                    // }
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'products/:id',
@@ -94,7 +93,15 @@ const router = new VueRouter({
                 {
                     path: 'categories',
                     name: 'categories',
-                    component: Categories
+                    component: Categories,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: 'models',
+                    name: 'models',
+                    component: ProductModels
                 },
                 {
                     path: 'checkout',
@@ -117,32 +124,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // debugger
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // if no token
         if (localStorage.getItem('bigStore.jwt') === null) {
             next({ path: '/admin/login' });
+        } else {
+            next();
         }
-        // } else {
-        //     let user = JSON.parse(localStorage.getItem('bigStore.user'));
-        //     if (to.matched.some(record => record.meta.is_admin)) {
-        //         if (user.is_admin === 1) {
-        //             next();
-        //         }
-        //         else {
-        //             next({ path: '/admin/login' })
-        //         }
-        //     }
-            // else if (to.matched.some(record => record.meta.is_user)) {
-            //     if (user.is_admin == 0) {
-            //         next()
-            //     }
-            //     else {
-            //         next({ name: 'admin' })
-            //     }
-            // }
-            next()
-
     } else {
         next();
     }

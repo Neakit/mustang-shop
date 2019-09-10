@@ -10,13 +10,6 @@
                         <label for="category-title">Название:</label>
                         <input type="text" class="form-control" id="category-title" v-model="title">
                     </div>
-                    <div class="form-group">
-                        <label for="category-id">Категория:</label>
-                        <select class="form-control" id="category-id" v-model="category_id">
-                            <option disabled value="">Выберите категорию</option>
-                            <option v-for="(item, index) in categories" :key="index" :value="item.id">{{ item.title }}</option>
-                        </select>
-                    </div>
                 </form>
                 <button class="btn btn-warning btn-block" @click="clearFilter">Очистить фильтр</button>
                 <button class="btn btn-primary btn-block" @click="filterCategories">Поиск</button>
@@ -27,7 +20,6 @@
                     <tr>
                         <td>#</td>
                         <td>Категория</td>
-                        <td>Описание</td>
                         <td></td>
                     </tr>
                     </thead>
@@ -51,30 +43,6 @@
             <div class="col-2 align-content-start">
                 <button class="btn btn-primary btn-block" @click="addNewProduct">Добавить новую категорию</button>
             </div>
-            <!--            <div class="row justify-content-center col-12">-->
-            <!--                <nav aria-label="Page navigation example">-->
-            <!--                    <ul class="pagination">-->
-            <!--                        <li class="page-item"-->
-            <!--                            :class="{ disabled: 1 === products.current_page }"-->
-            <!--                        >-->
-            <!--                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>-->
-            <!--                        </li>-->
-            <!--                        <li-->
-            <!--                            v-for="(page, index) in products.last_page"-->
-            <!--                            :key="index"-->
-            <!--                            class="page-item"-->
-            <!--                            :class="{ active: page === products.current_page }"-->
-            <!--                        >-->
-            <!--                            <a @click="getProductsPage(page)" class="page-link" href="#">{{ page }}</a>-->
-            <!--                        </li>-->
-            <!--                        <li class="page-item"-->
-            <!--                            :class="{ disabled:  products.current_page === products.last_page }"-->
-            <!--                        >-->
-            <!--                            <a class="page-link" href="#">Далее</a>-->
-            <!--                        </li>-->
-            <!--                    </ul>-->
-            <!--                </nav>-->
-            <!--            </div>-->
         </div>
     </div>
 </template>

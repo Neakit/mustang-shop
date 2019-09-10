@@ -12,9 +12,17 @@ class ProductModelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $models = ProductModel::all();
+        $models = ProductModel::where(function($q) use ($request) {
+            if(isset($request->title)){
+                $q->where('title', 'like', "%{$request->title}%");
+            }
+            if(isset($request->id)){
+                $q->where('id', '=', $request->id);
+            }
+        })->get();
+
         return response()->json($models, 200);
     }
 
