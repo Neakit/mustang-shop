@@ -52,10 +52,10 @@
             ])
         },
         methods: {
+            ...mapActions('category', ['getCategories']),
             ...mapActions([
                 'getProducts',
                 'getModels',
-                'getCategories',
                 'getStatuses'
             ])
         }

@@ -9,7 +9,7 @@
                         class="close"
                         data-dismiss="modal"
                         aria-label="Close"
-                        @click="toggleProductModal(false)"
+                        @click="closeModal()"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -72,15 +72,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- <button @click="toggleProductModal(false)">close</button>
-                <div class="modal-header">
-                    <slot name="header" v-html="data.name"></slot>
-                </div> -->
                 <div class="modal-footer">
                     <slot name="footer">
-<!--                        <button class="modal-default-button" @click="uploadFile">-->
-<!--                            Upload file-->
-<!--                        </button>-->
                         <button type="button" class="btn btn-primary" @click="saveChanges">{{ data.id ? 'Обновить' : 'Создать'}}</button>
                     </slot>
                 </div>
@@ -88,8 +81,6 @@
         </div>
     </div>
 </template>
-
-
 
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
@@ -120,7 +111,6 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
             ...mapActions(['updateProduct', 'createProduct']),
             attachFile(event) {
                 this.attachment = event.target.files[0];
-                debugger
             },
             async saveChanges() {
                 if(this.data.id) {
@@ -152,18 +142,18 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
                     // this.$emit('close', this.product)
                 }
             },
-            saveProduct() {
-                this.updateProduct({
-                    id: this.data.id,
-                    title: this.data.title,
-                    image: this.data.image,
-                    category: this.data.category,
-                    model: this.data.model,
-                    description: this.data.description,
-                    price: this.data.price
-                });
-            }
+            closeModal() {
+                this.data.id = '';
+                this.data.image = '';
+                this.data.title = '';
+                this.data.category_id = '';
+                this.data.product_model_id = '';
+                this.data.status_id = '';
+                this.data.description = '';
+                this.data.price = '';
 
+                this.toggleProductModal(false);
+            }
         }
     }
 </script>

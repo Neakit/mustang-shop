@@ -1,24 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-
-// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-//
-// /**
-//  * Next we will register the CSRF Token as a common header with Axios so that
-//  * all outgoing HTTP requests automatically have it attached. This is just
-//  * a simple convenience so we don't have to attach every token manually.
-//  */
-//
-// let token = document.head.querySelector('meta[name="csrf-token"]');
-//
-// if (token) {
-//     axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-// } else {
-//     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-// }
-//
-// axios.baseURL = '';
+// modules
+import modals from './modals';
+import category from './category';
 
 Vue.use(Vuex);
 
@@ -154,6 +139,10 @@ export default new Vuex.Store({
                 });
                 commit('setStatuses', data);
             }
+        },
+        modules: {
+            modals,
+            category
         }
     }
 );

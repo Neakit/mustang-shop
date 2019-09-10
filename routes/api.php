@@ -39,4 +39,5 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::patch('orders/{order}/deliver','OrderController@deliverOrder');
     Route::resource('/orders', 'OrderController');
     Route::resource('/products', 'ProductController')->except(['index','show']);
+    Route::resource('/categories', 'CategoryController')->except(['index','show']);
 });

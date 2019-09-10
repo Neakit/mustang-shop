@@ -16,6 +16,7 @@ import Admin from './layouts/Admin';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
+import Categories from './pages/admin/Categories';
 
 import SingleProduct from './pages/SingleProduct';
 import Checkout from './pages/Checkout';
@@ -89,6 +90,11 @@ const router = new VueRouter({
                     path: 'products',
                     name: 'products',
                     component: Products
+                },
+                {
+                    path: 'categories',
+                    name: 'categories',
+                    component: Categories
                 },
                 {
                     path: 'checkout',
