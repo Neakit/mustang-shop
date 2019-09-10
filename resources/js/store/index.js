@@ -74,24 +74,35 @@ export default new Vuex.Store({
             setUser(state, payload) {
                 state.user = payload;
             },
+            updateProduct(state, product) {
+                let updatedPropduct = state.products.data.find(p => p.id === product.id);
+                Object.assign(updatedPropduct, product);
+            },
+            addNewProduct(state, product) {
+                state.products.data.push(product);
+            },
             toggleProductModal(state, bool) {
                 state.productModal = bool;
             }
         },
         actions: {
-
-
-
-            // axios.get(`api/users/${this.user.id}/orders`)
-            //     .then(response => this.orders = response.data)
-            //
-            // axios.put(`/api/products/${this.product.id}`, {image, title, category, model, description, price })
-            //     .then(res => {
-            //         // this.products[index] = product
-            //         console.log(res);
-            //     debugger
-            // })
-
+            async createProduct({ commit }, product) {
+                const token = localStorage.getItem('bigStore.jwt');
+                const { data } = await axios({
+                    url: `/api/products/`,
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    data: { ...product }
+                });
+                if(data.status > 0) {
+                    commit('addNewProduct', data.data);
+                } else {
+                    // TODO: вывести ошибку
+                }
+            },
             async updateProduct({ commit }, product) {
                 const token = localStorage.getItem('bigStore.jwt');
                 const { data } = await axios({
@@ -101,16 +112,18 @@ export default new Vuex.Store({
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    data: {
-                        ...product
-                    }
+                    data: { ...product }
                 });
+                if(data.status > 0) {
+                    commit('updateProduct', data.data);
+                } else {
+                    // TODO: вывести ошибку
+                }
             },
-
             async getProducts({ commit }, payload) {
                 const params = payload && payload.params || {};
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
+                    baseURL: 'http://127.0.0.1:8001/',
                     method: 'get',
                     url: 'api/products/',
                     params
@@ -119,7 +132,7 @@ export default new Vuex.Store({
             },
             async getModels({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
+                    baseURL: 'http://127.0.0.1:8001/',
                     method: 'get',
                     url: 'api/models/'
                 });
@@ -127,7 +140,7 @@ export default new Vuex.Store({
             },
             async getCategories({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
+                    baseURL: 'http://127.0.0.1:8001/',
                     method: 'get',
                     url: 'api/categories/'
                 });
@@ -135,7 +148,7 @@ export default new Vuex.Store({
             },
             async getStatuses({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
+                    baseURL: 'http://127.0.0.1:8001/',
                     method: 'get',
                     url: 'api/statuses/'
                 });

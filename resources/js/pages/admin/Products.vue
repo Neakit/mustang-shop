@@ -45,8 +45,8 @@
                      <tr v-for="(product, index) in products.data" :key="index">
                          <td>{{ product.id }}</td>
                          <td>{{ product.title }}</td>
-                         <td>{{ product.category.title }}</td>
-                         <td>{{ product.model.title }}</td>
+                         <td>{{ product.category && product.category.title || '' }}</td>
+                         <td>{{ product.model && product.model.title || '' }}</td>
                          <td>{{ product.description }}</td>
                          <td>{{ product.price }} RUB</td>
                          <td>
@@ -59,7 +59,7 @@
                      </tr>
                      </tbody>
                  </table>
-                 <modal :product="product" v-show="true"></modal>
+                 <modal :product="product" v-show="productModal"></modal>
              </div>
              <div class="col-2 align-content-start">
                  <button class="btn btn-primary btn-block" @click="addNewProduct">Добавить новый продукт</button>
@@ -137,16 +137,6 @@
                 this.getProducts({ params: { page } });
             },
             addNewProduct() {
-                this.product = {
-                    id: null,
-                    image: null,
-                    title: null,
-                    category: null,
-                    model: null,
-                    description: null,
-                    price: null,
-                };
-
                 this.toggleProductModal(true);
             },
             editProduct(product) {
@@ -156,6 +146,7 @@
                     title: product.title,
                     category: product.category,
                     model: product.model,
+                    status: product.status,
                     description: product.description,
                     price: product.price
                 };

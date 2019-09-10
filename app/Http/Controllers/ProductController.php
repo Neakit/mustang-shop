@@ -59,17 +59,17 @@ class ProductController extends Controller
         $product = Product::create([
             'title' => $request->title,
             'description' => $request->description,
-            'model' => $request->model_id,
+            'product_model_id' => $request->product_model_id,
             'price' => $request->price,
             'image' => $request->image,
-            'category' => $request->category_id,
-            'currency' => $request->currency_id,
-            'status' => $request->status_id
+            'category_id' => $request->category_id,
+            'status_id' => $request->status_id
         ]);
+        $data = Product::where('id', $product->id)->with(['category', 'model', 'status'])->first();
 
         return response()->json([
-            'status' => (bool) $product,
-            'data'   => $product,
+            'status' => (bool) $product ? 1 : 0,
+            'data' => $data,
             'message' => $product ? 'Product Created!' : 'Error Creating Product'
         ]);
     }
@@ -137,11 +137,22 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $status = $product->update(
-            $request->only(['name', 'description', 'units', 'price', 'image'])
+            $request->only([
+                'image',
+                'title',
+                'product_model_id',
+                'category_id',
+                'status_id',
+                'price',
+                'description'
+            ])
         );
 
+        $data = Product::where('id', $request->id)->with(['category', 'model', 'status'])->first();
+
         return response()->json([
-            'status' => $status,
+            'data' => $data,
+            'status' => $status ? 1 : 0,
             'message' => $status ? 'Product Updated!' : 'Error Updating Product'
         ]);
     }

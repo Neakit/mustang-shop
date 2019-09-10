@@ -1922,13 +1922,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -2026,42 +2038,117 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       attachment: null
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['models', 'categories', 'statuses']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['models', 'categories', 'statuses']), {
     data: function data() {
       return {
         id: this.product && this.product.id || '',
         image: this.product && this.product.image || '',
         title: this.product && this.product.title || '',
-        category: this.product && this.product.category.id || '',
-        model: this.product && this.product.model.id || '',
-        status: this.product && this.product.status.id || '',
+        category_id: this.product && this.product.category.id || '',
+        product_model_id: this.product && this.product.model.id || '',
+        status_id: this.product && this.product.status.id || '',
         description: this.product && this.product.description || '',
         price: this.product && this.product.price || ''
       };
     }
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['toggleProductModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['updateProduct']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])(['toggleProductModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])(['updateProduct', 'createProduct']), {
     attachFile: function attachFile(event) {
       this.attachment = event.target.files[0];
+      debugger;
     },
-    uploadFile: function uploadFile(event) {
-      var _this = this;
+    saveChanges: function () {
+      var _saveChanges = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!this.data.id) {
+                  _context.next = 7;
+                  break;
+                }
 
-      if (this.attachment != null) {
-        var formData = new FormData();
-        formData.append("image", this.attachment);
-        var headers = {
-          'Content-Type': 'multipart/form-data'
-        };
-        axios.post("/api/upload-file", formData, {
-          headers: headers
-        }).then(function (response) {
-          _this.data.image = response.data;
-          debugger; // this.$emit('close', this.product)
-        });
-      } else {// this.$emit('close', this.product)
+                _context.next = 3;
+                return this.uploadFile();
+
+              case 3:
+                _context.next = 5;
+                return this.updateProduct(this.data);
+
+              case 5:
+                _context.next = 11;
+                break;
+
+              case 7:
+                _context.next = 9;
+                return this.uploadFile();
+
+              case 9:
+                _context.next = 11;
+                return this.createProduct(this.data);
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function saveChanges() {
+        return _saveChanges.apply(this, arguments);
       }
-    },
+
+      return saveChanges;
+    }(),
+    uploadFile: function () {
+      var _uploadFile = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var data, result;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(this.attachment != null)) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                data = new FormData();
+                data.append("image", this.attachment);
+                _context2.next = 5;
+                return axios({
+                  method: 'post',
+                  url: '/api/upload-file',
+                  data: data,
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                });
+
+              case 5:
+                result = _context2.sent;
+                this.data.image = result.data;
+                _context2.next = 9;
+                break;
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function uploadFile() {
+        return _uploadFile.apply(this, arguments);
+      }
+
+      return uploadFile;
+    }(),
     saveProduct: function saveProduct() {
       this.updateProduct({
         id: this.data.id,
@@ -2071,25 +2158,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         model: this.data.model,
         description: this.data.description,
         price: this.data.price
-      });
-    },
-    addProduct: function addProduct(product) {
-      var _this2 = this;
-
-      this.addingProduct = null;
-      var name = product.name;
-      var units = product.units;
-      var price = product.price;
-      var description = product.description;
-      var image = product.image;
-      axios.post("/api/products/", {
-        name: name,
-        units: units,
-        price: price,
-        description: description,
-        image: image
-      }).then(function (response) {
-        return _this2.products.push(product);
       });
     }
   })
@@ -2837,15 +2905,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     addNewProduct: function addNewProduct() {
-      this.product = {
-        id: null,
-        image: null,
-        title: null,
-        category: null,
-        model: null,
-        description: null,
-        price: null
-      };
       this.toggleProductModal(true);
     },
     editProduct: function editProduct(product) {
@@ -2855,6 +2914,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         title: product.title,
         category: product.category,
         model: product.model,
+        status: product.status,
         description: product.description,
         price: product.price
       };
@@ -2896,7 +2956,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.menu-item {\r\n  background-color: #cf6100;\r\n  color: #fff;\r\n  text-transform: uppercase;\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-size: 16px;\r\n  text-align: center;\r\n  padding: 16px;\r\n  cursor: pointer;\n}\n.menu-item__active {\r\n  background-color: #f17100;\n}\r\n", ""]);
+exports.push([module.i, "\n.menu-item {\n  background-color: #cf6100;\n  color: #fff;\n  text-transform: uppercase;\n  font-family: 'PT Sans', sans-serif;\n  font-size: 16px;\n  text-align: center;\n  padding: 16px;\n  cursor: pointer;\n}\n.menu-item__active {\n  background-color: #f17100;\n}\n", ""]);
 
 // exports
 
@@ -2915,7 +2975,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-title[data-v-1a457ff8] {\r\n  font-size: 18px;\r\n  font-family: 'PT Sans', sans-serif;\n}\n.card-model[data-v-1a457ff8] {\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-size: 12px;\r\n  color: #212121;\n}\n.btn[data-v-1a457ff8] {\r\n  background-color: #cf6100;\r\n  color: #fff;\r\n  border-radius: 0;\r\n  width: 116px;\r\n  height: 38px;\n}\n.price[data-v-1a457ff8] {\r\n  margin-top: 28px;\n}\n.card[data-v-1a457ff8] {\r\n  min-height: 420px;\r\n  margin: 6px 0;\r\n  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);\n}\n.card-body[data-v-1a457ff8] {\r\n  display: flex;\r\n  flex-direction: column;\r\n  justify-content: space-between;\n}\n.card-status[data-v-1a457ff8] {\r\n  font-size: 12px;\n}\n.card-price[data-v-1a457ff8] {\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-weight: 600;\r\n  font-size: 16px;\n}\r\n", ""]);
+exports.push([module.i, "\n.card-title[data-v-1a457ff8] {\n  font-size: 18px;\n  font-family: 'PT Sans', sans-serif;\n}\n.card-model[data-v-1a457ff8] {\n  font-family: 'PT Sans', sans-serif;\n  font-size: 12px;\n  color: #212121;\n}\n.btn[data-v-1a457ff8] {\n  background-color: #cf6100;\n  color: #fff;\n  border-radius: 0;\n  width: 116px;\n  height: 38px;\n}\n.price[data-v-1a457ff8] {\n  margin-top: 28px;\n}\n.card[data-v-1a457ff8] {\n  min-height: 420px;\n  margin: 6px 0;\n  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);\n}\n.card-body[data-v-1a457ff8] {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n.card-status[data-v-1a457ff8] {\n  font-size: 12px;\n}\n.card-price[data-v-1a457ff8] {\n  font-family: 'PT Sans', sans-serif;\n  font-weight: 600;\n  font-size: 16px;\n}\n", ""]);
 
 // exports
 
@@ -5469,11 +5529,27 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c(
+            "button",
+            {
+              staticClass: "close",
+              attrs: {
+                type: "button",
+                "data-dismiss": "modal",
+                "aria-label": "Close"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.toggleProductModal(false)
+                }
+              }
+            },
+            [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "row no-gutters p-2" }, [
-          _c("div", { staticClass: "col-4" }, [
+          _c("div", { staticClass: "col-4 p-1" }, [
             _c(
               "div",
               {
@@ -5506,7 +5582,7 @@ var render = function() {
                 }
               ],
               staticClass: "img-thumbnail",
-              attrs: { src: _vm.attachment, alt: "image" }
+              attrs: { src: _vm.data.image, alt: "image" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -5518,7 +5594,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-8" }, [
+          _c("div", { staticClass: "col-8 p-1" }, [
             _c("div", { staticClass: "form-group row" }, [
               _c(
                 "label",
@@ -5572,8 +5648,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.data.model,
-                        expression: "data.model"
+                        value: _vm.data.product_model_id,
+                        expression: "data.product_model_id"
                       }
                     ],
                     staticClass: "form-control",
@@ -5590,7 +5666,7 @@ var render = function() {
                           })
                         _vm.$set(
                           _vm.data,
-                          "model",
+                          "product_model_id",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -5634,8 +5710,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.data.category,
-                        expression: "data.category"
+                        value: _vm.data.category_id,
+                        expression: "data.category_id"
                       }
                     ],
                     staticClass: "form-control",
@@ -5652,7 +5728,7 @@ var render = function() {
                           })
                         _vm.$set(
                           _vm.data,
-                          "category",
+                          "category_id",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -5731,8 +5807,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.data.status,
-                        expression: "data.status"
+                        value: _vm.data.status_id,
+                        expression: "data.status_id"
                       }
                     ],
                     staticClass: "form-control",
@@ -5749,7 +5825,7 @@ var render = function() {
                           })
                         _vm.$set(
                           _vm.data,
-                          "status",
+                          "status_id",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -5775,7 +5851,40 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-2 col-form-label",
+                  attrs: { for: "exampleFormControlTextarea1" }
+                },
+                [_vm._v("Описание:")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-10" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.data.description,
+                      expression: "data.description"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "exampleFormControlTextarea1", rows: "3" },
+                  domProps: { value: _vm.data.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.data, "description", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ])
           ])
         ]),
         _vm._v(" "),
@@ -5787,27 +5896,11 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "modal-default-button",
-                  on: { click: _vm.uploadFile }
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.saveChanges }
                 },
-                [
-                  _vm._v(
-                    "\n                        Upload file\n                    "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "modal-default-button",
-                  on: { click: _vm.saveProduct }
-                },
-                [
-                  _vm._v(
-                    "\n                        Finish\n                    "
-                  )
-                ]
+                [_vm._v(_vm._s(_vm.data.id ? "Обновить" : "Создать"))]
               )
             ])
           ],
@@ -5817,47 +5910,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close",
-        attrs: {
-          type: "button",
-          "data-dismiss": "modal",
-          "aria-label": "Close"
-        }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-2 col-form-label",
-          attrs: { for: "exampleFormControlTextarea1" }
-        },
-        [_vm._v("Описание:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-10" }, [
-        _c("textarea", {
-          staticClass: "form-control",
-          attrs: { id: "exampleFormControlTextarea1", rows: "3" }
-        })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -6885,9 +6938,15 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.title))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(product.category.title))]),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s((product.category && product.category.title) || "")
+                    )
+                  ]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(product.model.title))]),
+                  _c("td", [
+                    _vm._v(_vm._s((product.model && product.model.title) || ""))
+                  ]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.description))]),
                   _vm._v(" "),
@@ -6919,8 +6978,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: true,
-                expression: "true"
+                value: _vm.productModal,
+                expression: "productModal"
               }
             ],
             attrs: { product: _vm.product }
@@ -24605,22 +24664,22 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     setUser: function setUser(state, payload) {
       state.user = payload;
     },
+    updateProduct: function updateProduct(state, product) {
+      var updatedPropduct = state.products.data.find(function (p) {
+        return p.id === product.id;
+      });
+      Object.assign(updatedPropduct, product);
+    },
+    addNewProduct: function addNewProduct(state, product) {
+      state.products.data.push(product);
+    },
     toggleProductModal: function toggleProductModal(state, bool) {
       state.productModal = bool;
     }
   },
   actions: {
-    // axios.get(`api/users/${this.user.id}/orders`)
-    //     .then(response => this.orders = response.data)
-    //
-    // axios.put(`/api/products/${this.product.id}`, {image, title, category, model, description, price })
-    //     .then(res => {
-    //         // this.products[index] = product
-    //         console.log(res);
-    //     debugger
-    // })
-    updateProduct: function () {
-      var _updateProduct = _asyncToGenerator(
+    createProduct: function () {
+      var _createProduct = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref, product) {
         var commit, token, _ref2, data;
@@ -24633,8 +24692,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
                 token = localStorage.getItem('bigStore.jwt');
                 _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  url: "/api/products/".concat(product.id),
-                  method: 'put',
+                  url: "/api/products/",
+                  method: 'post',
                   headers: {
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer ".concat(token)
@@ -24646,7 +24705,12 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
                 _ref2 = _context.sent;
                 data = _ref2.data;
 
-              case 6:
+                if (data.status > 0) {
+                  commit('addNewProduct', data.data);
+                } else {// TODO: вывести ошибку
+                }
+
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -24654,36 +24718,43 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee);
       }));
 
-      function updateProduct(_x, _x2) {
-        return _updateProduct.apply(this, arguments);
+      function createProduct(_x, _x2) {
+        return _createProduct.apply(this, arguments);
       }
 
-      return updateProduct;
+      return createProduct;
     }(),
-    getProducts: function () {
-      var _getProducts = _asyncToGenerator(
+    updateProduct: function () {
+      var _updateProduct = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref3, payload) {
-        var commit, params, _ref4, data;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref3, product) {
+        var commit, token, _ref4, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 commit = _ref3.commit;
-                params = payload && payload.params || {};
+                token = localStorage.getItem('bigStore.jwt');
                 _context2.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
-                  method: 'get',
-                  url: 'api/products/',
-                  params: params
+                  url: "/api/products/".concat(product.id),
+                  method: 'put',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  },
+                  data: _objectSpread({}, product)
                 });
 
               case 4:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                commit('setProducts', data);
+
+                if (data.status > 0) {
+                  commit('updateProduct', data.data);
+                } else {// TODO: вывести ошибку
+                }
 
               case 7:
               case "end":
@@ -24693,36 +24764,38 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee2);
       }));
 
-      function getProducts(_x3, _x4) {
-        return _getProducts.apply(this, arguments);
+      function updateProduct(_x3, _x4) {
+        return _updateProduct.apply(this, arguments);
       }
 
-      return getProducts;
+      return updateProduct;
     }(),
-    getModels: function () {
-      var _getModels = _asyncToGenerator(
+    getProducts: function () {
+      var _getProducts = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref5) {
-        var commit, _ref6, data;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref5, payload) {
+        var commit, params, _ref6, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 commit = _ref5.commit;
-                _context3.next = 3;
+                params = payload && payload.params || {};
+                _context3.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
+                  baseURL: 'http://127.0.0.1:8001/',
                   method: 'get',
-                  url: 'api/models/'
+                  url: 'api/products/',
+                  params: params
                 });
 
-              case 3:
+              case 4:
                 _ref6 = _context3.sent;
                 data = _ref6.data;
-                commit('setModels', data);
+                commit('setProducts', data);
 
-              case 6:
+              case 7:
               case "end":
                 return _context3.stop();
             }
@@ -24730,14 +24803,14 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee3);
       }));
 
-      function getModels(_x5) {
-        return _getModels.apply(this, arguments);
+      function getProducts(_x5, _x6) {
+        return _getProducts.apply(this, arguments);
       }
 
-      return getModels;
+      return getProducts;
     }(),
-    getCategories: function () {
-      var _getCategories = _asyncToGenerator(
+    getModels: function () {
+      var _getModels = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(_ref7) {
         var commit, _ref8, data;
@@ -24749,15 +24822,15 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
                 commit = _ref7.commit;
                 _context4.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
+                  baseURL: 'http://127.0.0.1:8001/',
                   method: 'get',
-                  url: 'api/categories/'
+                  url: 'api/models/'
                 });
 
               case 3:
                 _ref8 = _context4.sent;
                 data = _ref8.data;
-                commit('setCategories', data);
+                commit('setModels', data);
 
               case 6:
               case "end":
@@ -24767,14 +24840,14 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee4);
       }));
 
-      function getCategories(_x6) {
-        return _getCategories.apply(this, arguments);
+      function getModels(_x7) {
+        return _getModels.apply(this, arguments);
       }
 
-      return getCategories;
+      return getModels;
     }(),
-    getStatuses: function () {
-      var _getStatuses = _asyncToGenerator(
+    getCategories: function () {
+      var _getCategories = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(_ref9) {
         var commit, _ref10, data;
@@ -24786,15 +24859,15 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
                 commit = _ref9.commit;
                 _context5.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default()({
-                  baseURL: 'http://127.0.0.1:8000/',
+                  baseURL: 'http://127.0.0.1:8001/',
                   method: 'get',
-                  url: 'api/statuses/'
+                  url: 'api/categories/'
                 });
 
               case 3:
                 _ref10 = _context5.sent;
                 data = _ref10.data;
-                commit('setStatuses', data);
+                commit('setCategories', data);
 
               case 6:
               case "end":
@@ -24804,7 +24877,44 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee5);
       }));
 
-      function getStatuses(_x7) {
+      function getCategories(_x8) {
+        return _getCategories.apply(this, arguments);
+      }
+
+      return getCategories;
+    }(),
+    getStatuses: function () {
+      var _getStatuses = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(_ref11) {
+        var commit, _ref12, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                commit = _ref11.commit;
+                _context6.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default()({
+                  baseURL: 'http://127.0.0.1:8001/',
+                  method: 'get',
+                  url: 'api/statuses/'
+                });
+
+              case 3:
+                _ref12 = _context6.sent;
+                data = _ref12.data;
+                commit('setStatuses', data);
+
+              case 6:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function getStatuses(_x9) {
         return _getStatuses.apply(this, arguments);
       }
 
@@ -24833,8 +24943,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -4,21 +4,27 @@
             <div class="modal-container container">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ data.id ? 'Редактирование' : 'Создание'}} продукта</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        @click="toggleProductModal(false)"
+                    >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="row no-gutters p-2">
-                    <div class="col-4">
+                    <div class="col-4 p-1">
                         <div style="display: block; border: 1px dotted grey; height: 100px; border-radius: 8px" v-show="!data.image" class="m-2">
                             <p>Загрузите фото</p>
                         </div>
-                        <img v-show="data.image" :src="attachment" alt="image" class="img-thumbnail">
+                        <img v-show="data.image" :src="data.image" alt="image" class="img-thumbnail">
                         <div class="form-group">
                             <input type="file" id="file" @change="attachFile" class="form-control-file">
                         </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 p-1">
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlInput1">Наименование:</label>
                             <div class="col-sm-10">
@@ -28,7 +34,7 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlSelect1">Модель:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.model">
+                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.product_model_id">
                                     <option disabled value="">Выберите модель</option>
                                     <option v-for="(item, index) in models" :key="index" :value="item.id">{{ item.title }}</option>
                                 </select>
@@ -37,7 +43,7 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlSelect1">Категория:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.category">
+                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.category_id">
                                     <option disabled value="">Выберите категорию</option>
                                     <option v-for="(item, index) in categories" :key="index" :value="item.id">{{ item.title }}</option>
                                 </select>
@@ -52,7 +58,7 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlSelect1">Статус:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.status">
+                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.status_id">
                                     <option disabled value="">Выберите статус</option>
                                     <option v-for="(item, index) in statuses" :key="index" :value="item.id">{{ item.title }}</option>
                                 </select>
@@ -61,7 +67,7 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlTextarea1">Описание:</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="data.description"></textarea>
                             </div>
                         </div>
                     </div>
@@ -72,12 +78,10 @@
                 </div> -->
                 <div class="modal-footer">
                     <slot name="footer">
-                        <button class="modal-default-button" @click="uploadFile">
-                            Upload file
-                        </button>
-                        <button class="modal-default-button" @click="saveProduct">
-                            Finish
-                        </button>
+<!--                        <button class="modal-default-button" @click="uploadFile">-->
+<!--                            Upload file-->
+<!--                        </button>-->
+                        <button type="button" class="btn btn-primary" @click="saveChanges">{{ data.id ? 'Обновить' : 'Создать'}}</button>
                     </slot>
                 </div>
             </div>
@@ -103,9 +107,9 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
                     id: this.product && this.product.id || '',
                     image: this.product && this.product.image || '',
                     title: this.product && this.product.title || '',
-                    category: this.product && this.product.category.id || '',
-                    model: this.product && this.product.model.id || '',
-                    status: this.product && this.product.status.id || '',
+                    category_id: this.product && this.product.category.id || '',
+                    product_model_id: this.product && this.product.model.id || '',
+                    status_id: this.product && this.product.status.id || '',
                     description: this.product && this.product.description || '',
                     price: this.product && this.product.price || ''
                 }
@@ -113,23 +117,37 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
         },
         methods: {
             ...mapMutations(['toggleProductModal']),
-            ...mapActions(['updateProduct']),
+            ...mapActions(['updateProduct', 'createProduct']),
             attachFile(event) {
                 this.attachment = event.target.files[0];
+                debugger
             },
-            uploadFile(event) {
+            async saveChanges() {
+                if(this.data.id) {
+                    // upload image
+                    await this.uploadFile();
+                    // update product
+                    await this.updateProduct(this.data);
+                } else {
+                    // upload image
+                    await this.uploadFile();
+                    // create
+                    await this.createProduct(this.data);
+                }
+            },
+            async uploadFile() {
                 if (this.attachment != null) {
-                    var formData = new FormData();
-                    formData.append("image", this.attachment)
-                    let headers = {
-                        'Content-Type': 'multipart/form-data'
-                    }
-
-                    axios.post("/api/upload-file", formData, { headers }).then(response => {
-                        this.data.image = response.data
-                        debugger
-                        // this.$emit('close', this.product)
-                    })
+                    const data = new FormData();
+                    data.append("image", this.attachment);
+                    const result = await axios({
+                        method: 'post',
+                        url: '/api/upload-file',
+                        data,
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    this.data.image = result.data;
                 } else {
                     // this.$emit('close', this.product)
                 }
@@ -144,19 +162,8 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
                     description: this.data.description,
                     price: this.data.price
                 });
-            },
-            addProduct(product) {
-                this.addingProduct = null
-
-                let name = product.name
-                let units = product.units
-                let price = product.price
-                let description = product.description
-                let image = product.image
-
-                axios.post("/api/products/", {name, units, price, description, image})
-                     .then(response => this.products.push(product))
             }
+
         }
     }
 </script>
