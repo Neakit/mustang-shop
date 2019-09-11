@@ -59,7 +59,8 @@
                      </tr>
                      </tbody>
                  </table>
-                 <modal :product="product" v-show="productModal"></modal>
+<!--                 <modal :product="product" v-show="productModal"></modal>-->
+                 <modal :product="product" v-show="true"></modal>
              </div>
              <div class="col-2 align-content-start">
                  <button class="btn btn-primary btn-block" @click="addNewProduct">Добавить новый продукт</button>
@@ -93,7 +94,8 @@
  </template>
 
 <script>
-    import Modal from '../../components/ProductModal'
+    // import Modal from '../../components/ProductModal'
+    import Modal from '../../components/admin/PostsEditorModal'
     import { mapGetters, mapMutations, mapActions } from 'vuex';
 
     export default {
