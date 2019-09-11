@@ -1,59 +1,43 @@
 <template>
+<!--    <div class="default-layout-wrapper">-->
     <div>
         <Header />
         <Menu />
         <main>
             <router-view></router-view>
         </main>
+<!--        <Footer />-->
     </div>
 </template>
 
-    <script>
+<script>
     import Menu from '../components/Menu';
     import Header from '../components/Header';
-    import { mapActions, mapMutations, mapGetters } from 'vuex';
+    import Footer from '../components/Footer';
+    import { mapActions } from 'vuex';
 
     export default {
         components: {
             Menu,
-            Header
-        },
-        data() {
-            return {
-                name: null,
-                user_type: 0,
-                isLoggedIn: localStorage.getItem('bigStore.jwt') != null
-            }
-        },
-        computed: {
+            Header,
+            Footer
         },
         mounted() {
-            // this.setDefaults()
             this.getModels();
+            this.getProducts();
             this.getCategories();
         },
         methods : {
             ...mapActions('category', ['getCategories']),
             ...mapActions('model', ['getModels']),
-            //
-            setDefaults() {
-                if (this.isLoggedIn) {
-                    let user = JSON.parse(localStorage.getItem('bigStore.user'));
-                    this.name = user.name;
-                    this.user_type = user.is_admin;
-                }
-            },
-            change() {
-                this.isLoggedIn = localStorage.getItem('bigStore.jwt') != null;
-                this.setDefaults();
-            },
-            logout(){
-                localStorage.removeItem('bigStore.jwt')
-                localStorage.removeItem('bigStore.user')
-                this.change()
-                this.$router.push('/')
-            }
+            ...mapActions('product', ['getProducts'])
         }
     }
-    </script>
+</script>
+
+<style>
+    .default-layout-wrapper {
+        min-height: 100vh;
+    }
+</style>
 

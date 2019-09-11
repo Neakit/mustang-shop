@@ -5,8 +5,8 @@
                 type="text"
                 class="form-control"
                 placeholder="Поиск"
-                value="search"
-                @change="getProducts"
+                :value="search"
+                @input="searchProducts($event.target.value)"
             >
             <i class="material-icons search-field-icon">
                 search
@@ -38,10 +38,10 @@
                         data-parent="#accordionExample"
                     >
                         <div
-                            class="card-body"
+                            class="category-accordion-link"
                             v-for="(category, index) in item.categories"
                             :key="index"
-                            @click="fetchProducts({ model_id: item.id, category_id: category.id })"
+                            @click="filterProducts({ model_id: item.id, category_id: category.id })"
                         >
                             {{ category.title }}
                         </div>
@@ -67,11 +67,26 @@
             }
         },
         methods: {
-            ...mapActions('', ['getProducts']),
+            ...mapActions('product', ['getProducts']),
+            searchProducts(value) {
+                this.search = value;
+                clearTimeout(this.delayTimer);
+                this.delayTimer = setTimeout(() => {
+                    this.getProducts({ params: { title: this.search }});
+                }, 800);
+            },
+            filterProducts({ model_id, category_id }) {
+                const params = {
+                    model_id,
+                    category_id
+                };
+                this.getProducts({ params });
+            }
         },
         data() {
             return {
-                search: ''
+                search: '',
+                delayTimer: ''
             }
         }
     }
@@ -82,6 +97,7 @@
         background: #fff;
         border-radius: 0.25rem;
         box-shadow: 0 0 4px rgba(0,0,0,0.2);
+        margin-top: 18px;
     }
 
     .search-field {
@@ -108,5 +124,12 @@
         user-select: none;
         padding: 0.5rem 0.75rem;
         line-height: 1.6;
+    }
+
+    .category-accordion-link {
+        font-family: 'PT Sans', sans-serif;
+        color: #212121;
+        cursor: pointer;
+        padding: 1rem;
     }
 </style>
