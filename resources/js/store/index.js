@@ -6,6 +6,7 @@ import modals from './modals';
 import category from './category';
 import model from './model';
 import product from './product';
+import blog from './blog';
 
 Vue.use(Vuex);
 
@@ -146,7 +147,8 @@ export default new Vuex.Store({
             modals,
             category,
             model,
-            product
+            product,
+            blog
         }
     }
 );

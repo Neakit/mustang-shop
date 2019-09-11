@@ -8,6 +8,7 @@ import Buying from './pages/Buying';
 import Delivery from './pages/Delivery';
 import Guarantee from './pages/Guarantee';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Home from './pages/Home';
 
 import Default from './layouts/Default';
@@ -59,6 +60,11 @@ const router = new VueRouter({
                     path: '/blog',
                     name: 'blog',
                     component: Blog
+                },
+                {
+                    path: '/blog/:article',
+                    name: 'blogpost',
+                    component: BlogPost
                 },
             ]
         },
