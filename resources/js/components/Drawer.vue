@@ -1,92 +1,112 @@
 <template>
 	<div class="drawer">
-		<div class="search-field">
-		<img src="/icons/search-icon.svg" alt="search-icon" />
-		<input v-model="search" placeholder="Поиск" />
-	</div>
+		<div class="search-field my-2">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Поиск"
+                value="search"
+                @change="getProducts"
+            >
+            <i class="material-icons search-field-icon">
+                search
+            </i>
+        </div>
 
-	<div class="accordion" id="accordionExample">
+        <div class="accordion mн-2" id="accordionExample">
+            <div v-for="(item, index) in items" :key="index">
+                <div>
+                    <div :id="'headingOne' + item.title" class="d-flex justify-content-between align-items-center">
+                        <span
+                            class="model-accordion-link"
+                            data-toggle="collapse"
+                            :data-target="'#collapseOne' + item.title"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                        >
+                            {{ item.title }}
+                        </span>
+                        <i class="material-icons">
+                            keyboard_arrow_down
+                        </i>
+                    </div>
 
-		<div v-for="(item, index) in items" :key="index">
-			<div>
-				<div :id="'headingOne' + item.title" >
-					<h2 class="mb-0">
-						<button
-							class="btn btn-link"
-							type="button"
-							data-toggle="collapse"
-							:data-target="'#collapseOne' + item.title"
-							aria-expanded="true"
-							aria-controls="collapseOne"
-						>
-							{{ item.title }}
-						</button>
-					</h2>
-				</div>
-
-				<div
-					:id="'collapseOne' + item.title"
-					class="collapse"
-					:aria-labelledby="'headingOne' + item.title"
-					data-parent="#accordionExample"
-				>
-					<div
-						class="card-body"
-						v-for="(category, index) in item.categories"
-						:key="index"
-						@click="fetchProducts({ model_id: item.id, category_id: category.id })"
-					>
-						{{ category.title }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-  </div>
+                    <div
+                        :id="'collapseOne' + item.title"
+                        class="collapse"
+                        :aria-labelledby="'headingOne' + item.title"
+                        data-parent="#accordionExample"
+                    >
+                        <div
+                            class="card-body"
+                            v-for="(category, index) in item.categories"
+                            :key="index"
+                            @click="fetchProducts({ model_id: item.id, category_id: category.id })"
+                        >
+                            {{ category.title }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
 
-export default {
-	mounted() {
-        this.$axios.get("api/categories/").then(response => {
-			return this.categories = response.data
-		});
-        this.$axios.get("api/models/").then(response => {
-			return this.models = response.data
-		});
-
-	},
-	computed: {
-		items(){
-			return this.models.map(model => {
-				model.categories = this.categories;
-				return model
-			})
-		}
-	},
-	methods: {
-        ...mapActions(['getProducts']),
-		fetchProducts(data){
-			const { model_id, category_id } = data;
-			console.log(model_id, category_id)
-			axios.post('api/products/', data).then(res => {
-				console.log(res)
-			})
-		}
-	},
-    data() {
-        return {
-			search: '',
-			categories: [],
-			models: []
+    export default {
+        computed: {
+            ...mapGetters('model', ['models']),
+            ...mapGetters('category', ['categories']),
+            items(){
+                return this.models.map(model => {
+                    model.categories = this.categories;
+                    return model
+                })
+            }
+        },
+        methods: {
+            ...mapActions('', ['getProducts']),
+        },
+        data() {
+            return {
+                search: ''
+            }
         }
     }
-}
 </script>
 
 <style scoped lang="scss">
+    .accordion {
+        background: #fff;
+        border-radius: 0.25rem;
+        box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    }
 
+    .search-field {
+        box-shadow: 0 0 4px rgba(0,0,0,0.2);
+        position: relative;
+    }
 
+    .search-field-icon {
+        position: absolute;
+        right: 5px;
+        top: 7px;
+    }
+
+    .model-accordion-link {
+        font-family: 'PT Sans', sans-serif;
+        color: #212121;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 400;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0.5rem 0.75rem;
+        line-height: 1.6;
+    }
 </style>

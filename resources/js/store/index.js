@@ -4,6 +4,8 @@ import axios from 'axios';
 // modules
 import modals from './modals';
 import category from './category';
+import model from './model';
+import product from './product';
 
 Vue.use(Vuex);
 
@@ -142,7 +144,9 @@ export default new Vuex.Store({
         },
         modules: {
             modals,
-            category
+            category,
+            model,
+            product
         }
     }
 );

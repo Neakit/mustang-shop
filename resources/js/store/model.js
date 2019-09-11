@@ -13,8 +13,8 @@ const state = {
 };
 
 const mutations = {
-    setProductModels(state, payload) {
-        state.categories = payload;
+    setModels(state, payload) {
+        state.models = payload;
     },
     setCategory(state, payload) {
         state.category = payload;
@@ -35,8 +35,8 @@ const mutations = {
 };
 
 const getters = {
-    categories(state) {
-        return state.categories;
+    models(state) {
+        return state.models;
     },
     category(state) {
         return state.category;
@@ -87,15 +87,15 @@ const actions = {
             // TODO: вывести ошибку
         }
     },
-    async getProductModels({ commit }, payload) {
+    async getModels({ commit }, payload) {
         const params = payload && payload.params || {};
         const { data } = await axios({
             baseURL: 'http://127.0.0.1:8001/',
             method: 'get',
-            url: 'api/model/',
+            url: 'api/models/',
             params
         });
-        commit('setProductModels', data);
+        commit('setModels', data);
     }
 };
 

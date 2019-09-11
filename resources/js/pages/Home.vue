@@ -1,54 +1,69 @@
 <template>
-        <div>
-            <div class="container-fluid hero-section d-flex align-content-center justify-content-center flex-wrap ml-auto">
-                <h2 class="title"></h2>
-            </div>
+    <div>
+        <div class="container-fluid main-section">
             <div class="container">
-                 <div class="row">
-                            <input type="text" v-model="product">
-                            <button @click="search">find</button>
-                        </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 product-box" v-for="(product,index) in products" :key="index">
-                                <router-link :to="{ path: '/products/'+product.id}">
-                                    <img :src="product.image" :alt="product.name">
-                                    <h5><span v-html="product.name"></span>
-                                        <span class="small-text text-muted float-right">{{ product.price }}</span>
-                                    </h5>
-                                    <button class="col-md-4 btn btn-sm btn-primary float-right">Buy Now</button>
-                                </router-link>
-                            </div>
-                        </div>
-                        <!-- <router-view></router-view> -->
+                    <div class="col-3">
+                        <Drawer />
+                    </div>
+                    <div class="col-6">
+                        title
                     </div>
                 </div>
             </div>
         </div>
-    </template>
+<!--            <div class="container">-->
+<!--                 <div class="row">-->
+<!--                            <input type="text" v-model="product">-->
+<!--                            <button @click="search">find</button>-->
+<!--                        </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-12">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-4 product-box" v-for="(product,index) in products" :key="index">-->
+<!--                                <router-link :to="{ path: '/products/'+product.id}">-->
+<!--                                    <img :src="product.image" :alt="product.name">-->
+<!--                                    <h5><span v-html="product.name"></span>-->
+<!--                                        <span class="small-text text-muted float-right">{{ product.price }}</span>-->
+<!--                                    </h5>-->
+<!--                                    <button class="col-md-4 btn btn-sm btn-primary float-right">Buy Now</button>-->
+<!--                                </router-link>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; <router-view></router-view> &ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+    </div>
+</template>
 
-    <script>
-        export default {
-            data(){
-                return {
-                    products : [],
-                    product: ''
-                }
-            },
-            methods: {
-                search(){
-                    console.log('search called');
-                    axios.post('api/product', {query: this.product}).then(res => console.log(res))
-                }
-            },
-            mounted(){
-                axios.get("api/products/").then(response => this.products = response.data)      
+<script>
+    import Drawer from "../components/Drawer";
+    export default {
+        components: {Drawer},
+        data(){
+            return {
+                products : [],
+                product: ''
             }
+        },
+        methods: {
+            // search(){
+            //     console.log('search called');
+            //     axios.post('api/product', {query: this.product}).then(res => console.log(res))
+            // }
+        },
+        mounted(){
+            // axios.get("api/products/").then(response => this.products = response.data)
         }
-    </script>
+    }
+</script>
 
-      <style scoped>
+<style scoped>
+    .main-section {
+        background: url('/images/bg-home.png') no-repeat center center;
+        height: 593px;
+    }
     .small-text {
         font-size: 14px;
     }

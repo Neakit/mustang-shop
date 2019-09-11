@@ -2,8 +2,7 @@
     <div>
         <Header />
         <Menu />
-        <main class="py-4">
-            <!-- <router-view @loggedIn="change"></router-view> -->
+        <main>
             <router-view></router-view>
         </main>
     </div>
@@ -12,6 +11,7 @@
     <script>
     import Menu from '../components/Menu';
     import Header from '../components/Header';
+    import { mapActions, mapMutations, mapGetters } from 'vuex';
 
     export default {
         components: {
@@ -25,10 +25,17 @@
                 isLoggedIn: localStorage.getItem('bigStore.jwt') != null
             }
         },
+        computed: {
+        },
         mounted() {
             // this.setDefaults()
+            this.getModels();
+            this.getCategories();
         },
         methods : {
+            ...mapActions('category', ['getCategories']),
+            ...mapActions('model', ['getModels']),
+            //
             setDefaults() {
                 if (this.isLoggedIn) {
                     let user = JSON.parse(localStorage.getItem('bigStore.user'));
