@@ -2,6 +2,7 @@ const state = {
     categoryModal: false,
     productModal: false,
     productModelModal: false,
+    blogModal: false
 };
 
 const mutations = {
@@ -12,13 +13,16 @@ const mutations = {
 
 const getters = {
     categoryModal(state) {
-        return state.categoryModal
+        return state.categoryModal;
     },
     productModal(state) {
-        return state.productModal
+        return state.productModal;
     },
     productModelModal(state) {
-        return state.productModelModal
+        return state.productModelModal;
+    },
+    blogModal(state) {
+        return state.blogModal;
     }
 };
 

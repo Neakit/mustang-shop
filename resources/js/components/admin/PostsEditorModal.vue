@@ -2,30 +2,52 @@
     <div class="modal-mask">
         <div class="modal-wrapper">
             <div class="modal-container container">
-                <div>
-                    <form>
-                        <quillEditor
-                            v-model='editorContent'
-                            ref='textEditor'
-                            :options='editorOption'
-                        ></quillEditor>
-                        <input type="file" v-show="false" ref="inputImage">
-                    </form>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ post.id ? 'Редактирование' : 'Создание'}} статьи блога</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        @click="closeModal()"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-
-                    <div>
-                        <button
-                            @click="save()"
+                <div class="form-group row no-gutters mt-2">
+                    <label class="col-2 col-form-label" for="exampleFormControlInput1">Заголовок статьи:</label>
+                    <div class="col-sm-10">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            :value="post.title"
+                            @input="setPostProp({ key: 'title', value: $event.target.value })"
                         >
-                            Сохранить
-                        </button>
-
-                        <button
-                            @click="cancel()"
-                        >
-                            Отмена
-                        </button>
                     </div>
+                </div>
+
+                <div class="p-1 row justify-content-between no-gutters align-items-center">
+                    <div>
+                        <img v-show="post.image" :src="post.image" alt="image" class="img-thumbnail">
+                        <div class="form-group">
+                            <label for="file">Заглавное фото статьи:</label>
+                            <input type="file" class="form-control-file" id="file" @change="attachFile">
+                        </div>
+                    </div>
+                    <button v-show="attachment" type="button" class="btn btn-success" @click="uploadFile">Загрузить</button>
+                </div>
+
+                <quill-editor
+                    :value="post.body"
+                    @input="setPostProp({ key: 'body', value: $event })"
+                    ref='textEditor'
+                    :options='editorOption'
+                ></quill-editor>
+
+                <div class="mt-2 text-right">
+                    <button type="button" class="btn btn-success">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -33,20 +55,13 @@
 </template>
 
 <script>
-    // import { mapState, mapMutations, mapActions } from 'vuex';
-    import 'quill/dist/quill.core.css'
-    import 'quill/dist/quill.snow.css'
-    import 'quill/dist/quill.bubble.css'
-
-    import { quillEditor } from 'vue-quill-editor'
+    import { mapGetters, mapMutations, mapActions } from 'vuex';
 
     export default {
-        components: {
-            quillEditor
-        },
         data() {
             return {
-                editorContent: '<p>I am Example</p>',
+                attachment: null,
+                image: null,
                 editorOption: {
                     // some quill options
                     modules: {
@@ -66,33 +81,46 @@
                                 [{ 'align': [] }],
                                 ['clean'],
                                 ['image']
-                            ] ,
-                            // handlers: {
-                            //     image: this.handleImageAdded
-                            // }
-                        },
-                        imageResize: true,
-
+                            ]
+                        }
                     }
                 },
-
             }
         },
         methods: {
-            // ...mapMutations('editor', ['toggleEditorDialog']),
-            // ...mapActions('editor', ['uploadArticleImage', 'saveArticle']),
-            cancel() {
-                // this.toggleEditorDialog(false);
+            ...mapMutations('blog', ['setPostProp', 'clearPost']),
+            ...mapMutations('modals', ['toggleModal']),
+            ...mapActions('blog', ['createPost']),
+            attachFile(event) {
+                this.attachment = event.target.files[0];
+            },
+            async uploadFile() {
+                if (this.attachment != null) {
+                    const data = new FormData();
+                    data.append("image", this.attachment);
+                    const result = await axios({
+                        method: 'post',
+                        url: '/api/upload-file',
+                        data,
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    this.setPostProp({ key: 'image', value: result.data })
+                } else {
+                    // this.$emit('close', this.product)
+                }
             },
             save() {
-                // this.saveArticle(this.editorContent)
+                this.createPost();
             },
-            handleImageAdded() {
-
+            closeModal() {
+                this.clearPost();
+                this.toggleModal({ name: 'blogModal', bool: false });
             }
         },
         computed: {
-            // ...mapState('editor', ['editorDialog'])
+            ...mapGetters('blog', ['post'])
         }
     }
 </script>
@@ -115,9 +143,10 @@
         vertical-align: middle;
     }
     .modal-container {
-        /* width: 300px; */
-        margin: 0px auto;
-        /* padding: 20px 30px; */
+        height: 50rem;
+        overflow: scroll;
+        padding: 1.5rem;
+        margin: 0 auto;
         background-color: #fff;
         border-radius: 2px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);

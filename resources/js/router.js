@@ -18,6 +18,7 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
 import Categories from './pages/admin/Categories';
+import Posts from './pages/admin/Posts';
 
 import SingleProduct from './pages/SingleProduct';
 import Checkout from './pages/Checkout';
@@ -108,6 +109,11 @@ const router = new VueRouter({
                     path: 'models',
                     name: 'models',
                     component: ProductModels
+                },
+                {
+                    path: 'posts',
+                    name: 'posts',
+                    component: Posts
                 },
                 {
                     path: 'checkout',

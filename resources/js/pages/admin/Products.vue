@@ -59,8 +59,7 @@
                      </tr>
                      </tbody>
                  </table>
-<!--                 <modal :product="product" v-show="productModal"></modal>-->
-                 <modal :product="product" v-show="true"></modal>
+                 <modal :product="product" v-show="productModal"></modal>
              </div>
              <div class="col-2 align-content-start">
                  <button class="btn btn-primary btn-block" @click="addNewProduct">Добавить новый продукт</button>

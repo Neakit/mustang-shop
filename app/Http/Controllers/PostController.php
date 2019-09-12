@@ -25,4 +25,30 @@ class PostController extends Controller
 
         return response()->json($posts, 200);
     }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'body' => $request->body,
+            'image' => $request->image,
+        ]);
+        $data = Post::where('id', $post->id)->get();
+
+        return response()->json([
+            'status' => (bool) $post ? 1 : 0,
+            'data' => $data,
+            'message' => $post ? 'Post Created!' : 'Error Creating Post'
+        ]);
+    }
+
 }
