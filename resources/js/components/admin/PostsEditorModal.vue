@@ -47,7 +47,7 @@
                 ></quill-editor>
 
                 <div class="mt-2 text-right">
-                    <button type="button" class="btn btn-success">Сохранить</button>
+                    <button type="button" class="btn btn-success" @click="savePost">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -111,8 +111,12 @@
                     // this.$emit('close', this.product)
                 }
             },
-            save() {
-                this.createPost();
+            savePost() {
+                if(this.post.id) {
+                    // editPost();
+                } else {
+                    this.createPost();
+                }
             },
             closeModal() {
                 this.clearPost();

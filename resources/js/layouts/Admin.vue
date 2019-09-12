@@ -33,6 +33,7 @@
             this.getModels();
             this.getCategories();
             this.getStatuses();
+            this.getPosts();
         },
         computed: {
             ...mapGetters('category', ['categories']),
@@ -47,6 +48,7 @@
         },
         methods: {
             ...mapActions('category', ['getCategories']),
+            ...mapActions('blog', ['getPosts']),
             ...mapActions([
                 'getProducts',
                 'getModels',

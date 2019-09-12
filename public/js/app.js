@@ -2270,8 +2270,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return uploadFile;
     }(),
-    save: function save() {
-      this.createPost();
+    savePost: function savePost() {
+      if (this.post.id) {// editPost();
+      } else {
+        this.createPost();
+      }
     },
     closeModal: function closeModal() {
       this.clearPost();
@@ -2335,13 +2338,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.getModels();
     this.getCategories();
     this.getStatuses();
+    this.getPosts();
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('category', ['categories']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['products', 'models', 'user']), {
     auth: function auth() {
       return this.$route.path !== "/admin/login";
     }
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('category', ['getCategories']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getProducts', 'getModels', 'getStatuses']))
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('category', ['getCategories']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('blog', ['getPosts']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getProducts', 'getModels', 'getStatuses']))
 });
 
 /***/ }),
@@ -3158,13 +3162,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Modal: _components_admin_PostsEditorModal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('modals', ['toggleModal', 'setPost']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('modals', ['toggleModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('blog', ['setPost']), {
     createNewPost: function createNewPost() {
       // this.setPost({
       //     title: '',
@@ -3174,9 +3202,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'blogModal',
         bool: true
       });
+    },
+    editPost: function editPost(post) {
+      this.setPost({
+        id: post.id,
+        image: post.image,
+        title: post.title,
+        body: post.body
+      });
+      this.toggleModal({
+        name: 'blogModal',
+        bool: true
+      });
     }
   }),
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('modals', ['blogModal']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('modals', ['blogModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('blog', ['posts']))
 });
 
 /***/ }),
@@ -20435,27 +20475,24 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "mt-2 text-right" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                attrs: { type: "button" },
+                on: { click: _vm.savePost }
+              },
+              [_vm._v("Сохранить")]
+            )
+          ])
         ],
         1
       )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-2 text-right" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "button" } },
-        [_vm._v("Сохранить")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -21683,26 +21720,76 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("modal", {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.blogModal,
-            expression: "blogModal"
-          }
-        ]
-      }),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.createNewPost } }, [_vm._v("new post")])
-    ],
-    1
-  )
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "row col-8" },
+      [
+        _c("table", { staticClass: "table table-responsive table-striped" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.posts.data, function(post, index) {
+              return _c("tr", { key: index }, [
+                _c("td", [_vm._v(_vm._s(post.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s((post && post.title) || ""))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editPost(post)
+                        }
+                      }
+                    },
+                    [_vm._v("Редактировать")]
+                  )
+                ])
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("modal", {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.blogModal,
+              expression: "blogModal"
+            }
+          ]
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.createNewPost } }, [_vm._v("new post")])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("td", [_vm._v("#")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Заголовок")]),
+        _vm._v(" "),
+        _c("td")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

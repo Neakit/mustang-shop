@@ -21,7 +21,7 @@ class PostController extends Controller
             if(isset($request->id)){
                 $q->where('id', '=', $request->id);
             }
-        })->paginate(4);
+        })->paginate(10);
 
         return response()->json($posts, 200);
     }
