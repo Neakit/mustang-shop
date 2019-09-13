@@ -19,6 +19,9 @@ import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
 import Categories from './pages/admin/Categories';
 import Posts from './pages/admin/Posts';
+import GuaranteeAdmin from './pages/admin/Guarantee';
+import DeliveryAdmin from './pages/admin/Delivery';
+import BuyingAdmin from './pages/admin/Buying';
 
 import SingleProduct from './pages/SingleProduct';
 import Checkout from './pages/Checkout';
@@ -114,6 +117,21 @@ const router = new VueRouter({
                     path: 'posts',
                     name: 'posts',
                     component: Posts
+                },
+                {
+                    path: 'guarantee',
+                    name: 'guarantee',
+                    component: GuaranteeAdmin
+                },
+                {
+                    path: 'delivery',
+                    name: 'delivery',
+                    component: DeliveryAdmin
+                },
+                {
+                    path: 'buying',
+                    name: 'buying',
+                    component: BuyingAdmin
                 },
                 {
                     path: 'checkout',

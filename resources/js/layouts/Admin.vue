@@ -17,6 +17,15 @@
                 <li class="nav-item">
                     <router-link class="nav-link" to="/admin/posts">Посты: {{ posts.data && posts.data.length || 0 }}</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/admin/guarantee">Гарантия</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/admin/delivery">Доставка</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/admin/buying">Скупка</router-link>
+                </li>
             </ul>
             <button type="button" class="btn btn-outline-dark">Выйти</button>
         </nav>

@@ -26,6 +26,9 @@ Route::get('/categories', 'CategoryController@index');
 Route::get('/models', 'ProductModelController@index');
 Route::get('/statuses', 'ProductStatusController@index');
 Route::get('/posts', 'PostController@index');
+Route::get('/guarantee', 'GuaranteeController@index');
+Route::get('/delivery', 'DeliveryController@index');
+Route::get('/buying', 'BuyingController@index');
 
 Route::post('/upload-file', 'ProductController@uploadFile');
 Route::get('/products/{product}', 'ProductController@show');
@@ -43,4 +46,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::resource('/products', 'ProductController')->except(['index','show']);
     Route::resource('/posts', 'PostController')->except(['index']);
     Route::resource('/categories', 'CategoryController')->except(['index','show']);
+    Route::resource('/guarantee', 'GuaranteeController')->except(['index','show']);
+    Route::resource('/delivery', 'DeliveryController')->except(['index','show']);
+    Route::resource('/buying', 'BuyingController')->except(['index','show']);
 });
