@@ -1,19 +1,19 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
 Vue.use(VueRouter);
-
+// layouts
+import Default from './layouts/Default';
+import Admin from './layouts/Admin';
+// default pages
+import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Buying from './pages/Buying';
 import Delivery from './pages/Delivery';
 import Guarantee from './pages/Guarantee';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-import Home from './pages/Home';
-
-import Default from './layouts/Default';
-import Admin from './layouts/Admin';
-
+import SingleProduct from './pages/SingleProduct';
+// admin pages
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
@@ -22,11 +22,7 @@ import Posts from './pages/admin/Posts';
 import GuaranteeAdmin from './pages/admin/Guarantee';
 import DeliveryAdmin from './pages/admin/Delivery';
 import BuyingAdmin from './pages/admin/Buying';
-
-import SingleProduct from './pages/SingleProduct';
-import Checkout from './pages/Checkout';
 import ProductModels from "./pages/admin/ProductModels";
-// import Admin from './pages/Admin';
 
 const router = new VueRouter({
     mode: 'history',
@@ -70,6 +66,11 @@ const router = new VueRouter({
                     name: 'blogpost',
                     component: BlogPost
                 },
+                {
+                    path: '/product/:id',
+                    name: 'singleProduct',
+                    component: Shop
+                }
             ]
         },
         {
@@ -93,12 +94,18 @@ const router = new VueRouter({
                 {
                     path: 'products/:id',
                     name: 'single-products',
-                    component: SingleProduct
+                    component: SingleProduct,
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'products',
                     name: 'products',
-                    component: Products
+                    component: Products,
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'categories',
@@ -111,43 +118,43 @@ const router = new VueRouter({
                 {
                     path: 'models',
                     name: 'models',
-                    component: ProductModels
+                    component: ProductModels,
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'posts',
                     name: 'posts',
-                    component: Posts
+                    component: Posts,
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'guarantee',
                     name: 'guarantee',
-                    component: GuaranteeAdmin
+                    component: GuaranteeAdmin,
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'delivery',
                     name: 'delivery',
-                    component: DeliveryAdmin
+                    component: DeliveryAdmin,
+                    meta: {
+                        requiresAuth: true
+                    }
                 },
                 {
                     path: 'buying',
                     name: 'buying',
-                    component: BuyingAdmin
-                },
-                {
-                    path: 'checkout',
-                    name: 'checkout',
-                    component: Checkout,
-                    props: (route) => ({ pid: route.query.pid })
-                },
-                // {
-                //     path: '/admin/:page',
-                //     name: 'admin-pages',
-                //     component: Admin,
-                //     meta: {
-                //         requiresAuth: true,
-                //         is_admin: true
-                //     }
-                // }
+                    component: BuyingAdmin,
+                    meta: {
+                        requiresAuth: true
+                    }
+                }
             ]
         }
     ]
