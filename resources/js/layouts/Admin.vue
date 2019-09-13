@@ -14,6 +14,9 @@
                 <li class="nav-item">
                     <router-link class="nav-link" to="/admin/categories">Категории: {{ categories.length || 0 }}</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/admin/posts">Посты: {{ posts.data && posts.data.length || 0 }}</router-link>
+                </li>
             </ul>
             <button type="button" class="btn btn-outline-dark">Выйти</button>
         </nav>
@@ -21,6 +24,7 @@
             <p>Авторизуйтесь, чтобы войти в панель управления</p>
         </nav>
         <InfoToast />
+        <DestroyConfirmModal v-show="destroyConfirmModal"/>
         <router-view></router-view>
     </div>
 </template>
@@ -28,9 +32,13 @@
 <script>
     import { mapGetters, mapActions } from 'vuex';
     import InfoToast from "../components/InfoToast";
+    import DestroyConfirmModal from "../components/admin/DestroyConfirmModal";
 
     export default {
-        components: {InfoToast},
+        components: {
+            InfoToast,
+            DestroyConfirmModal
+        },
         mounted() {
             this.getProducts();
             this.getModels();
@@ -40,6 +48,8 @@
         },
         computed: {
             ...mapGetters('category', ['categories']),
+            ...mapGetters('blog', ['posts']),
+            ...mapGetters('modals', ['destroyConfirmModal']),
             ...mapGetters([
                 'products',
                 'models',

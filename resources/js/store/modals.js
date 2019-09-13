@@ -3,6 +3,10 @@ const state = {
     productModal: false,
     productModelModal: false,
     blogModal: false,
+
+    destroyConfirmModal: false,
+    destroyData: {},
+
     toastModal: false,
     toastMessage: ''
 };
@@ -13,6 +17,9 @@ const mutations = {
     },
     setToastMessage(state, data) {
         state.toastMessage = data;
+    },
+    setDestroyData(state, data) {
+        state.destroyData = data;
     }
 };
 
@@ -28,6 +35,9 @@ const getters = {
     },
     blogModal(state) {
         return state.blogModal;
+    },
+    destroyConfirmModal(state) {
+        return state.destroyConfirmModal;
     }
 };
 

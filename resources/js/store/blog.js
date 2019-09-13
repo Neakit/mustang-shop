@@ -35,6 +35,9 @@ const mutations = {
     updatePost(state, post) {
         let updatedPost = state.posts.data.find(p => p.id === post.id);
         Object.assign(updatedPost, post);
+    },
+    deletePost(state, postId) {
+        state.posts.data = state.posts.data.filter(p => p.id !== postId);
     }
 };
 
@@ -59,7 +62,7 @@ const actions = {
         commit('setPosts', data);
     },
     async updatePost({ commit }) {
-        const { id, title, description, body } = state.post;
+        const { id, title, description, body, image } = state.post;
         const token = localStorage.getItem('bigStore.jwt');
         const { data } = await axios({
             url: `/api/posts/${id}`,
@@ -72,7 +75,8 @@ const actions = {
                 id,
                 title,
                 description,
-                body
+                body,
+                image
             }
         });
         if(data.status > 0) {
@@ -100,6 +104,23 @@ const actions = {
                 image
             }
         });
+    },
+    async deletePost({ commit }) {
+        const token = localStorage.getItem('bigStore.jwt');
+        const { data } = await axios({
+            url: `/api/posts/${state.post.id}`,
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            params: {
+                id: state.post.id
+            }
+        });
+        if(data.status > 0) {
+            commit('deletePost', state.post.id);
+        }
     }
 };
 

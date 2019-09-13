@@ -10,7 +10,7 @@ import store from './store';
 import axios from 'axios';
 Vue.prototype.$axios = axios;
 
-// import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.core.css'
 
 Vue.use(VueQuillEditor);
 

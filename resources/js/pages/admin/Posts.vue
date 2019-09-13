@@ -72,7 +72,7 @@
             Modal
         },
         methods: {
-            ...mapMutations('modals', ['toggleModal']),
+            ...mapMutations('modals', ['toggleModal', 'setDestroyData']),
             ...mapMutations('blog', ['setPost']),
             ...mapActions('blog', ['getPosts']),
             createNewPost() {
@@ -85,8 +85,19 @@
                     bool: true
                 });
             },
-            deletePost() {
-                //
+            deletePost(post) {
+                this.setPost({
+                    id: post.id,
+                });
+                this.setDestroyData({
+                    title: post.title,
+                    deleteActionName: 'blog/deletePost',
+                    clearMutationName: 'blog/clearPost'
+                });
+                this.toggleModal({
+                    name: 'destroyConfirmModal',
+                    bool: true
+                });
             },
             editPost(post){
                 this.setPost({

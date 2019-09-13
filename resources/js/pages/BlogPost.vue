@@ -5,7 +5,7 @@
         </div>
         <img :src="post.image" alt="#" style="width: 100%">
         <p>{{ post.title }}</p>
-        <p>{{ post.description }}</p>
+        <div v-html="post.body"></div>
     </div>
 </template>
 

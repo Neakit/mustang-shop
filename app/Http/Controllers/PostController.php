@@ -42,6 +42,7 @@ class PostController extends Controller
     {
         $status = $post->update(
             $request->only([
+                'image',
                 'title',
                 'description',
                 'body'
@@ -54,6 +55,16 @@ class PostController extends Controller
             'data' => $data,
             'status' => $status ? 1 : 0,
             'message' => $status ? 'Post Updated!' : 'Error Updating Post'
+        ]);
+    }
+
+    public function destroy(Request $request, Post $post)
+    {
+        $deletedRows = Post::where('id', $request->id)->delete();
+
+        return response()->json([
+            'status' => $deletedRows,
+            'message' => $deletedRows ? 'Post Deleted!' : 'Error Deleting Post'
         ]);
     }
 
