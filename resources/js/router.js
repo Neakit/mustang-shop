@@ -69,7 +69,7 @@ const router = new VueRouter({
                 {
                     path: '/product/:id',
                     name: 'singleProduct',
-                    component: Shop
+                    component: SingleProduct
                 }
             ]
         },

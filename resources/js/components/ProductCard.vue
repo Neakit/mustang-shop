@@ -15,7 +15,7 @@
                         <p class="card-status">{{ card.status.title }}</p>
                         <p class="card-price">{{ card.price }} ₽</p>
                     </div>
-                    <a href="#" @click="order(card.id)" class="btn">Купить</a>
+                    <router-link :to="`/product/${card.id}`" class="btn">Купить</router-link>
                 </div>
             </div>
         </div>

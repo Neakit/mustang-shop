@@ -3,6 +3,7 @@ const state = {
     productModal: false,
     productModelModal: false,
     blogModal: false,
+    orderModal: false,
 
     destroyConfirmModal: false,
     destroyData: {},
@@ -35,6 +36,9 @@ const getters = {
     },
     blogModal(state) {
         return state.blogModal;
+    },
+    orderModal(state) {
+        return state.orderModal;
     },
     destroyConfirmModal(state) {
         return state.destroyConfirmModal;
