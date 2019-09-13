@@ -2,12 +2,17 @@ const state = {
     categoryModal: false,
     productModal: false,
     productModelModal: false,
-    blogModal: false
+    blogModal: false,
+    toastModal: false,
+    toastMessage: ''
 };
 
 const mutations = {
     toggleModal(state, { name, bool }){
         state[name] = bool;
+    },
+    setToastMessage(state, data) {
+        state.toastMessage = data;
     }
 };
 

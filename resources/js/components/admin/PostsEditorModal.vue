@@ -2,6 +2,7 @@
     <div class="modal-mask">
         <div class="modal-wrapper">
             <div class="modal-container container">
+
                 <div class="modal-header">
                     <h5 class="modal-title">{{ post.id ? 'Редактирование' : 'Создание'}} статьи блога</h5>
                     <button
@@ -28,9 +29,9 @@
                     </div>
                 </div>
 
-                <div class="p-1 row justify-content-between no-gutters align-items-center">
+                <div class="row justify-content-between no-gutters align-items-center">
                     <div>
-                        <img v-show="post.image" :src="post.image" alt="image" class="img-thumbnail">
+                        <img v-show="post.image" :src="post.image" alt="image" class="post-header-image">
                         <div class="form-group">
                             <label for="file">Заглавное фото статьи:</label>
                             <input type="file" class="form-control-file" id="file" @change="attachFile">
@@ -47,7 +48,12 @@
                 ></quill-editor>
 
                 <div class="mt-2 text-right">
-                    <button type="button" class="btn btn-success" @click="savePost">Сохранить</button>
+                    <button
+                        type="button"
+                        class="btn btn-success"
+                        @click="savePost"
+                        :disabled="disabled"
+                    >Сохранить</button>
                 </div>
             </div>
         </div>
@@ -90,7 +96,7 @@
         methods: {
             ...mapMutations('blog', ['setPostProp', 'clearPost']),
             ...mapMutations('modals', ['toggleModal']),
-            ...mapActions('blog', ['createPost']),
+            ...mapActions('blog', ['createPost', 'updatePost']),
             attachFile(event) {
                 this.attachment = event.target.files[0];
             },
@@ -113,7 +119,7 @@
             },
             savePost() {
                 if(this.post.id) {
-                    // editPost();
+                    this.updatePost();
                 } else {
                     this.createPost();
                 }
@@ -124,7 +130,11 @@
             }
         },
         computed: {
-            ...mapGetters('blog', ['post'])
+            ...mapGetters('blog', ['post']),
+            disabled() {
+                const data = Object.entries(this.post);
+                return data.slice(1).some(i => !i[1].length );
+            }
         }
     }
 </script>
@@ -133,7 +143,7 @@
 <style scoped>
     .modal-mask {
         position: fixed;
-        z-index: 9998;
+        z-index: 2;
         top: 0;
         left: 0;
         width: 100%;
@@ -147,7 +157,7 @@
         vertical-align: middle;
     }
     .modal-container {
-        height: 50rem;
+        height: 48rem;
         overflow: scroll;
         padding: 1.5rem;
         margin: 0 auto;
@@ -169,6 +179,14 @@
     }
     .modal-leave-active {
         opacity: 0;
+    }
+    .post-header-image {
+        padding: 0.25rem;
+        background-color: #f8fafc;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        max-width: 50%;
+        height: auto;
     }
     .modal-enter .modal-container,
     .modal-leave-active .modal-container {

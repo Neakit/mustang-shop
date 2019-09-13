@@ -7,35 +7,22 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $posts = Post::where(function($q) use ($request) {
             if(isset($request->title)){
                 $q->where('title', 'like', "%{$request->title}%");
             }
-            if(isset($request->id)){
-                $q->where('id', '=', $request->id);
+            if(isset($request->body)){
+                $q->where('body', 'like', "%{$request->body}%");
             }
         })->paginate(10);
 
         return response()->json($posts, 200);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -48,6 +35,25 @@ class PostController extends Controller
             'status' => (bool) $post ? 1 : 0,
             'data' => $data,
             'message' => $post ? 'Post Created!' : 'Error Creating Post'
+        ]);
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        $status = $post->update(
+            $request->only([
+                'title',
+                'description',
+                'body'
+            ])
+        );
+
+        $data = Post::where('id', $request->id)->first();
+
+        return response()->json([
+            'data' => $data,
+            'status' => $status ? 1 : 0,
+            'message' => $status ? 'Post Updated!' : 'Error Updating Post'
         ]);
     }
 

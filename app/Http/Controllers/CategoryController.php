@@ -19,7 +19,7 @@ class CategoryController extends Controller
                 $q->where('title', 'like', "%{$request->title}%");
             }
             if(isset($request->description)){
-                $q->where('title', 'like', "%{$request->description}%");
+                $q->where('description', 'like', "%{$request->description}%");
             }
             if(isset($request->id)){
                 $q->where('id', '=', $request->id);

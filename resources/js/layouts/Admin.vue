@@ -20,14 +20,17 @@
         <nav class="navbar navbar-expand-sm navbar-light bg-light" v-else>
             <p>Авторизуйтесь, чтобы войти в панель управления</p>
         </nav>
+        <InfoToast />
         <router-view></router-view>
     </div>
 </template>
 
 <script>
     import { mapGetters, mapActions } from 'vuex';
+    import InfoToast from "../components/InfoToast";
 
     export default {
+        components: {InfoToast},
         mounted() {
             this.getProducts();
             this.getModels();

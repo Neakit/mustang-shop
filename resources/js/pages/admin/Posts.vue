@@ -1,45 +1,80 @@
 <template>
-    <div>
-        <div class="row col-8">
-            <table class="table table-responsive table-striped">
-                <thead>
-                <tr>
-                    <td>#</td>
-                    <td>Заголовок</td>
-                    <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(post, index) in posts.data" :key="index">
-                    <td>{{ post.id }}</td>
-                    <td>{{ post && post.title || '' }}</td>
-                    <td>
-                        <button
-                            type="button"
-                            class="btn btn-warning"
-                            @click="editPost(post)"
-                        >Редактировать</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <modal v-show="blogModal"></modal>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                <div class="alert alert-primary" role="alert">
+                    Поиск по статьям
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="category-title">Название:</label>
+                        <input type="text" class="form-control" id="category-title" v-model="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="category-title">Описание:</label>
+                        <input type="text" class="form-control" id="category-title" v-model="body">
+                    </div>
+                </form>
+                <button class="btn btn-warning btn-block" @click="clearFilter">Очистить фильтр</button>
+                <button class="btn btn-primary btn-block" @click="filterPosts">Поиск</button>
+            </div>
+            <div class="col-8">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Заголовок</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(post, index) in posts.data" :key="index">
+                        <td style="width: 5%">{{ post.id }}</td>
+                        <td style="width: 85%">{{ post && post.title || '' }}</td>
+                        <td style="width: 5%">
+                            <button
+                                type="button"
+                                class="btn btn-warning"
+                                @click="editPost(post)"
+                            >Редактировать</button>
+                        </td>
+                        <td style="width: 5%">
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                @click="deletePost(post)"
+                            >Удалить</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <modal v-show="blogModal"></modal>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-primary btn-block" @click="createNewPost">Новый пост</button>
+            </div>
         </div>
-        <button @click="createNewPost">new post</button>
     </div>
 </template>
 
 <script>
     import Modal from '../../components/admin/PostsEditorModal';
-    import { mapGetters, mapMutations } from 'vuex';
+    import { mapGetters, mapMutations, mapActions } from 'vuex';
 
     export default {
+        data() {
+            return {
+                title: '',
+                body: ''
+            }
+        },
         components: {
             Modal
         },
         methods: {
             ...mapMutations('modals', ['toggleModal']),
             ...mapMutations('blog', ['setPost']),
+            ...mapActions('blog', ['getPosts']),
             createNewPost() {
                 // this.setPost({
                 //     title: '',
@@ -49,6 +84,9 @@
                     name: 'blogModal',
                     bool: true
                 });
+            },
+            deletePost() {
+                //
             },
             editPost(post){
                 this.setPost({
@@ -61,6 +99,18 @@
                     name: 'blogModal',
                     bool: true
                 });
+            },
+            filterPosts() {
+                const params = {
+                    title: this.title,
+                    body: this.body
+                };
+                this.getPosts({ params });
+            },
+            clearFilter() {
+                this.title = "";
+                this.body = "";
+                this.getPosts();
             }
         },
         computed: {
