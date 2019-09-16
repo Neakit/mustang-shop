@@ -26,4 +26,45 @@ class ProductModelController extends Controller
         return response()->json($models, 200);
     }
 
+    public function update(Request $request, ProductModel $model)
+    {
+        $status = $model->update(
+            $request->only([
+                'title'
+            ])
+        );
+
+        $data = ProductModel::where('id', $request->id)->first();
+
+        return response()->json([
+            'data' => $data,
+            'status' => $status ? 1 : 0,
+            'message' => $status ? 'Product Model Updated!' : 'Error Updating Product Model'
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $model = ProductModel::create([
+            'title' => $request->title
+        ]);
+        $data = ProductModel::where('id', $model->id)->first();
+
+        return response()->json([
+            'status' => (bool) $model ? 1 : 0,
+            'data' => $data,
+            'message' => $model ? 'Product Model Created!' : 'Error Creating Product Model'
+        ]);
+    }
+
+    public function destroy(Request $request, ProductModel $model)
+    {
+        $deletedRows = ProductModel::where('id', $request->id)->delete();
+
+        return response()->json([
+            'status' => $deletedRows,
+            'message' => $deletedRows ? 'Product Model Deleted!' : 'Error Deleting Product Model'
+        ]);
+    }
+
 }

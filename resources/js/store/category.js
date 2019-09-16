@@ -60,6 +60,8 @@ const actions = {
             }
         }).then(res => {
             commit('addNewCategory', res.data.data);
+            commit('modals/setToastMessage', 'Категория успешно создана', { root: true });
+            commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });
         }).catch(e => {
             if(e.response.status === 401) {
                 router.push('/admin/login');
@@ -79,6 +81,8 @@ const actions = {
             }
         }).then(res => {
             commit('updateCategory', res.data.data);
+            commit('modals/setToastMessage', 'Категория успешно обновлена', { root: true });
+            commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });
         }).catch(e => {
             if(e.response.status === 401) {
                 router.push('/admin/login');
@@ -92,6 +96,8 @@ const actions = {
             params: { id: state.category.id }
         }).then(res => {
             commit('deleteCategory', state.category.id);
+            commit('modals/setToastMessage', 'Категория успешно удалена', { root: true });
+            commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });
         }).catch(e => {
             if(e.response.status === 401) {
                 router.push('/admin/login');

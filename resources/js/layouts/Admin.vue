@@ -49,11 +49,11 @@
             DestroyConfirmModal
         },
         mounted() {
-            this.getProducts();
+            // this.getProducts();
             this.getModels();
             this.getCategories();
-            this.getStatuses();
-            this.getPosts();
+            // this.getStatuses();
+            // this.getPosts();
         },
         computed: {
             ...mapGetters('category', ['categories']),
@@ -70,10 +70,10 @@
         },
         methods: {
             ...mapActions('category', ['getCategories']),
+            ...mapActions('model', ['getModels']),
             ...mapActions('blog', ['getPosts']),
             ...mapActions([
                 'getProducts',
-                'getModels',
                 'getStatuses'
             ])
         }

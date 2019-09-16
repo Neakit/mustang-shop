@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::resource('/products', 'ProductController')->except(['index','show']);
     Route::resource('/posts', 'PostController')->except(['index']);
     Route::resource('/categories', 'CategoryController')->except(['index','show']);
+    Route::resource('/models', 'ProductModelController')->except(['index','show']);
     Route::resource('/guarantee', 'GuaranteeController')->except(['index','show']);
     Route::resource('/delivery', 'DeliveryController')->except(['index','show']);
     Route::resource('/buying', 'BuyingController')->except(['index','show']);

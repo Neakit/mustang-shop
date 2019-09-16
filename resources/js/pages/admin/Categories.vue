@@ -38,8 +38,8 @@
                     <tbody>
                     <tr v-for="(category, index) in categories" :key="index">
                         <td style="width: 5%">{{ category.id }}</td>
-                        <td style="width: 80%">{{ category && category.title || '' }}</td>
-                        <td style="width: 5%">{{ category && category.description || '' }}</td>
+                        <td style="width: 40%">{{ category && category.title || '' }}</td>
+                        <td style="width: 45%">{{ category && category.description || '' }}</td>
                         <td style="width: 5%">
                             <button
                                 type="button"
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import Modal from '../../components/CategoryModal'
+    import Modal from '../../components/admin/CategoryModal'
     import { mapGetters, mapMutations, mapActions } from 'vuex';
 
     export default {

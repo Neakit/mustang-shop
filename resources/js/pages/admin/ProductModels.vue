@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <div class="alert alert-primary" role="alert">
-                    Фильтр категорий
+                    Фильтр моделей
                 </div>
                 <form>
                     <div class="form-group">
@@ -15,92 +15,120 @@
                 <button class="btn btn-primary btn-block" @click="filterCategories">Поиск</button>
             </div>
             <div class="row col-8">
-                <table class="table table-responsive table-striped">
+                <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
                         <td>#</td>
-                        <td>Категория</td>
-                        <td></td>
+                        <td>Модель</td>
+                        <td colspan="2"></td>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(category, index) in categories" :key="index">
-                        <td>{{ category.id }}</td>
-                        <td>{{ category && category.title || '' }}</td>
-                        <td>{{ category && category.description || '' }}</td>
-                        <td>
+                    <tr v-for="(model, index) in models" :key="index">
+                        <td style="width: 5%">{{ model.id }}</td>
+                        <td style="width: 85%">{{ model && model.title || '' }}</td>
+                        <td style="width: 5%">
                             <button
                                 type="button"
                                 class="btn btn-warning"
-                                @click="editProduct(product)"
+                                @click="editModel(model)"
                             >Редактировать</button>
+                        </td>
+                        <td style="width: 5%">
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                @click="deleteModel(model)"
+                            >Удалить</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <!--                <modal :product="product" v-show="productModal"></modal>-->
+                <modal v-show="productModelModal"></modal>
             </div>
             <div class="col-2 align-content-start">
-                <button class="btn btn-primary btn-block" @click="addNewProduct">Добавить новую категорию</button>
+                <button class="btn btn-primary btn-block" @click="addNewModel">Добавить новую модель</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    // import Modal from '../../components/ProductModal'
+    import Modal from '../../components/admin/ProductModelModal'
     import { mapGetters, mapMutations, mapActions, mapState } from 'vuex';
 
     export default {
         data() {
             return {
-                product_model_id: "",
                 title: ""
             }
         },
         components: {
-            // Modal
+            Modal
         },
         computed: {
-            ...mapGetters('category', ['categories']),
+            ...mapGetters('model', ['models']),
+            ...mapGetters('modals', ['productModelModal'])
         },
         methods: {
-            ...mapMutations(['toggleProductModal']),
-            ...mapActions(['getCategories']),
+            ...mapMutations('modals', ['toggleModal', 'setDestroyData']),
+            ...mapMutations('model', ['setModel', 'clearModel']),
+            ...mapActions('model', ['getModels']),
+
             filterCategories() {
                 const params = {
-                    title: this.title,
-                    model_id: this.model_id,
-                    category_id: this.category_id
+                    title: this.title
                 };
-                this.getProducts({ params });
+                this.getModels({ params });
             },
-            // clearFilter() {
-            //     this.category_id = "";
-            //     this.model_id = "";
-            //     this.title = "";
-            //     this.getProducts();
-            // },
-            // getProductsPage(page) {
-            //     this.getProducts({ params: { page } });
-            // },
-            // addNewProduct() {
-            //     this.toggleProductModal(true);
-            // },
-            // editProduct(product) {
-            //     this.product = {
-            //         id: product.id,
-            //         image: product.image,
-            //         title: product.title,
-            //         category: product.category,
-            //         model: product.model,
-            //         status: product.status,
-            //         description: product.description,
-            //         price: product.price
-            //     };
-            //
-            //     this.toggleProductModal(true);
-            // }
+            clearFilter() {
+                this.title = "";
+                this.getModels();
+            },
+            addNewModel() {
+                 this.setModel({
+                    title: ''
+                });
+                this.toggleModal({
+                    name: 'categoryModal',
+                    bool: true
+                });
+            },
+
+            editModel(model){
+                this.setModel({
+                    id: model.id,
+                    title: model.title
+                });
+                this.toggleModal({
+                    name: 'productModelModal',
+                    bool: true
+                });
+            },
+            deleteModel(model){
+                this.setModel({
+                    id: model.id,
+                });
+                this.setDestroyData({
+                    title: model.title,
+                    deleteActionName: 'model/deleteModel',
+                    clearMutationName: 'model/clearModel'
+                });
+                this.toggleModal({
+                    name: 'destroyConfirmModal',
+                    bool: true
+                });
+            },
+            addNewModel() {
+                this.setModel({
+                    title: '',
+                    description: ''
+                });
+                this.toggleModal({
+                    name: 'productModelModal',
+                    bool: true
+                });
+            }
         }
     }
 </script>
