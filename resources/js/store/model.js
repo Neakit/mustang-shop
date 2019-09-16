@@ -90,7 +90,7 @@ const actions = {
     async getModels({ commit }, payload) {
         const params = payload && payload.params || {};
         const { data } = await axios({
-            baseURL: 'http://127.0.0.1:8001/',
+            baseURL: 'http://127.0.0.1:8000/',
             method: 'get',
             url: 'api/models/',
             params

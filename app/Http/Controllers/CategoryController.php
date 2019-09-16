@@ -74,4 +74,14 @@ class CategoryController extends Controller
             'message' => $status ? 'Category Updated!' : 'Error Updating Category'
         ]);
     }
+
+    public function destroy(Request $request, Category $category)
+    {
+        $deletedRows = Category::where('id', $request->id)->delete();
+
+        return response()->json([
+            'status' => $deletedRows,
+            'message' => $deletedRows ? 'Category Deleted!' : 'Error Deleting Category'
+        ]);
+    }
 }

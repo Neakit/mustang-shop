@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { privateHTTP, publicHTTP } from '../services';
+import router from '../router';
 
 const createEmptyCategory = () => {
     return {
@@ -32,6 +33,9 @@ const mutations = {
     },
     addNewCategory(state, data) {
         state.categories.unshift(data);
+    },
+    deleteCategory(state, id) {
+        state.categories = state.categories.filter(p => p.id !== id);
     }
 };
 
@@ -45,59 +49,65 @@ const getters = {
 };
 
 const actions = {
-    async createCategory({ commit }) {
+    createCategory({ commit }) {
         const { title, description } = state.category;
-        const token = localStorage.getItem('bigStore.jwt');
-        const { data } = await axios({
+        privateHTTP({
             url: `/api/categories/`,
             method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
             data: {
                 title,
                 description
             }
-        });
-        if(data.status > 0) {
-            commit('addNewCategory', data.data);
-        } else {
-            // TODO: вывести ошибку
-        }
+        }).then(res => {
+            commit('addNewCategory', res.data.data);
+        }).catch(e => {
+            if(e.response.status === 401) {
+                router.push('/admin/login');
+            }
+        })
     },
-    async updateCategory({ commit, state }) {
+    updateCategory({ commit }) {
         const { id, title, description } = state.category;
-        const token = localStorage.getItem('bigStore.jwt');
-        const { data } = await axios({
+
+        privateHTTP({
             url: `/api/categories/${id}`,
             method: 'put',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
             data: {
                 id,
                 title,
                 description
             }
-        });
-        if(data.status > 0) {
-            commit('updateCategory', data.data);
-        } else {
-            // TODO: вывести ошибку
-        }
+        }).then(res => {
+            commit('updateCategory', res.data.data);
+        }).catch(e => {
+            if(e.response.status === 401) {
+                router.push('/admin/login');
+            }
+        })
+    },
+    deleteCategory({ commit }) {
+        privateHTTP({
+            url: `/api/categories/${state.category.id}`,
+            method: 'delete',
+            params: { id: state.category.id }
+        }).then(res => {
+            commit('deleteCategory', state.category.id);
+        }).catch(e => {
+            if(e.response.status === 401) {
+                router.push('/admin/login');
+            }
+        })
     },
     async getCategories({ commit }, payload) {
         const params = payload && payload.params || {};
-        const { data } = await axios({
-            baseURL: 'http://127.0.0.1:8001/',
+        const { data } = await publicHTTP({
             method: 'get',
             url: 'api/categories/',
             params
         });
         commit('setCategories', data);
-    }
+    },
+   
 };
 
 export default {

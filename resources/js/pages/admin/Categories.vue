@@ -26,26 +26,33 @@
                 <button class="btn btn-primary btn-block" @click="filterCategories">Поиск</button>
             </div>
             <div class="row col-8">
-                <table class="table table-responsive table-striped">
+                <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
                         <td>#</td>
                         <td>Категория</td>
                         <td>Описание</td>
-                        <td></td>
+                        <td colspan="2"></td>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(category, index) in categories" :key="index">
-                        <td>{{ category.id }}</td>
-                        <td>{{ category && category.title || '' }}</td>
-                        <td>{{ category && category.description || '' }}</td>
-                        <td>
+                        <td style="width: 5%">{{ category.id }}</td>
+                        <td style="width: 80%">{{ category && category.title || '' }}</td>
+                        <td style="width: 5%">{{ category && category.description || '' }}</td>
+                        <td style="width: 5%">
                             <button
                                 type="button"
                                 class="btn btn-warning"
                                 @click="editCategory(category)"
                             >Редактировать</button>
+                        </td>
+                        <td style="width: 5%">
+                            <button
+                                type="button"
+                                class="btn btn btn-danger"
+                                @click="deleteCategory(category)"
+                            >Удалить</button>
                         </td>
                     </tr>
                     </tbody>
@@ -80,7 +87,7 @@
         },
         methods: {
             ...mapMutations('category', ['setCategory']),
-            ...mapMutations('modals', ['toggleModal']),
+            ...mapMutations('modals', ['toggleModal', 'setDestroyData']),
             ...mapActions('category', ['getCategories']),
             filterCategories() {
                 const params = {
@@ -116,7 +123,21 @@
                     name: 'categoryModal',
                     bool: true
                 });
-            }
+            },
+            deleteCategory(category) {
+                this.setCategory({
+                    id: category.id,
+                });
+                this.setDestroyData({
+                    title: category.title,
+                    deleteActionName: 'category/deleteCategory',
+                    clearMutationName: 'category/clearCategory'
+                });
+                this.toggleModal({
+                    name: 'destroyConfirmModal',
+                    bool: true
+                });
+            },
         }
     }
 </script>

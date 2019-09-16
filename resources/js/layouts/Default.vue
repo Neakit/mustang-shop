@@ -27,8 +27,8 @@
         },
         mounted() {
             this.getModels();
-            this.getProducts();
             this.getCategories();
+            this.getProducts();
         },
         computed: {
             ...mapGetters('modals', ['orderModal'])

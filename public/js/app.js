@@ -2644,8 +2644,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.getModels();
-    this.getProducts();
     this.getCategories();
+    this.getProducts();
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])('modals', ['orderModal'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])('category', ['getCategories']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])('model', ['getModels']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])('product', ['getProducts']))
@@ -3303,6 +3303,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3317,7 +3324,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     Modal: _components_CategoryModal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('modals', ['categoryModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('category', ['categories'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('category', ['setCategory']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('modals', ['toggleModal']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('category', ['getCategories']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('category', ['setCategory']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('modals', ['toggleModal', 'setDestroyData']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('category', ['getCategories']), {
     filterCategories: function filterCategories() {
       var params = {
         id: this.id,
@@ -3352,6 +3359,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       this.toggleModal({
         name: 'categoryModal',
+        bool: true
+      });
+    },
+    deleteCategory: function deleteCategory(category) {
+      this.setCategory({
+        id: category.id
+      });
+      this.setDestroyData({
+        title: category.title,
+        deleteActionName: 'category/deleteCategory',
+        clearMutationName: 'category/clearCategory'
+      });
+      this.toggleModal({
+        name: 'destroyConfirmModal',
         bool: true
       });
     }
@@ -6321,7 +6342,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.menu-item {\n  background-color: #cf6100;\n  color: #fff;\n  text-transform: uppercase;\n  font-family: 'PT Sans', sans-serif;\n  font-size: 16px;\n  text-align: center;\n  padding: 16px;\n  cursor: pointer;\n}\n.menu-item__active {\n  background-color: #f17100;\n}\n", ""]);
+exports.push([module.i, "\n.menu-item {\r\n  background-color: #cf6100;\r\n  color: #fff;\r\n  text-transform: uppercase;\r\n  font-family: 'PT Sans', sans-serif;\r\n  font-size: 16px;\r\n  text-align: center;\r\n  padding: 16px;\r\n  cursor: pointer;\n}\n.menu-item__active {\r\n  background-color: #f17100;\n}\r\n", ""]);
 
 // exports
 
@@ -22511,24 +22532,26 @@ var render = function() {
         "div",
         { staticClass: "row col-8" },
         [
-          _c("table", { staticClass: "table table-responsive table-striped" }, [
+          _c("table", { staticClass: "table table-striped table-bordered" }, [
             _vm._m(0),
             _vm._v(" "),
             _c(
               "tbody",
               _vm._l(_vm.categories, function(category, index) {
                 return _c("tr", { key: index }, [
-                  _c("td", [_vm._v(_vm._s(category.id))]),
+                  _c("td", { staticStyle: { width: "5%" } }, [
+                    _vm._v(_vm._s(category.id))
+                  ]),
                   _vm._v(" "),
-                  _c("td", [
+                  _c("td", { staticStyle: { width: "80%" } }, [
                     _vm._v(_vm._s((category && category.title) || ""))
                   ]),
                   _vm._v(" "),
-                  _c("td", [
+                  _c("td", { staticStyle: { width: "5%" } }, [
                     _vm._v(_vm._s((category && category.description) || ""))
                   ]),
                   _vm._v(" "),
-                  _c("td", [
+                  _c("td", { staticStyle: { width: "5%" } }, [
                     _c(
                       "button",
                       {
@@ -22541,6 +22564,22 @@ var render = function() {
                         }
                       },
                       [_vm._v("Редактировать")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticStyle: { width: "5%" } }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteCategory(category)
+                          }
+                        }
+                      },
+                      [_vm._v("Удалить")]
                     )
                   ])
                 ])
@@ -22589,7 +22628,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("td", [_vm._v("Описание")]),
         _vm._v(" "),
-        _c("td")
+        _c("td", { attrs: { colspan: "2" } })
       ])
     ])
   }
@@ -40032,15 +40071,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************!*\
   !*** ./resources/js/components/InfoToast.vue ***!
   \***********************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _InfoToast_vue_vue_type_template_id_15dff3be_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./InfoToast.vue?vue&type=template&id=15dff3be&scoped=true& */ "./resources/js/components/InfoToast.vue?vue&type=template&id=15dff3be&scoped=true&");
 /* harmony import */ var _InfoToast_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InfoToast.vue?vue&type=script&lang=js& */ "./resources/js/components/InfoToast.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _InfoToast_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _InfoToast_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _InfoToast_vue_vue_type_style_index_0_id_15dff3be_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InfoToast.vue?vue&type=style&index=0&id=15dff3be&scoped=true&lang=css& */ "./resources/js/components/InfoToast.vue?vue&type=style&index=0&id=15dff3be&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _InfoToast_vue_vue_type_style_index_0_id_15dff3be_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InfoToast.vue?vue&type=style&index=0&id=15dff3be&scoped=true&lang=css& */ "./resources/js/components/InfoToast.vue?vue&type=style&index=0&id=15dff3be&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -40072,7 +40110,7 @@ component.options.__file = "resources/js/components/InfoToast.vue"
 /*!************************************************************************!*\
   !*** ./resources/js/components/InfoToast.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42227,6 +42265,86 @@ router.beforeEach(function (to, from, next) {
 
 /***/ }),
 
+/***/ "./resources/js/services/http.js":
+/*!***************************************!*\
+  !*** ./resources/js/services/http.js ***!
+  \***************************************/
+/*! exports provided: privateHTTP, publicHTTP */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "privateHTTP", function() { return privateHTTP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "publicHTTP", function() { return publicHTTP; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var privateHTTP = function privateHTTP(_ref) {
+  var url = _ref.url,
+      method = _ref.method,
+      _ref$data = _ref.data,
+      data = _ref$data === void 0 ? {} : _ref$data,
+      params = _ref.params;
+  // get token 
+  var token = localStorage.getItem('bigStore.jwt');
+
+  if (token !== null) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      url: url,
+      method: method,
+      params: params,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer ".concat(token)
+      },
+      data: data
+    });
+  } else {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+      url: url,
+      method: method,
+      params: params,
+      data: data
+    });
+  }
+};
+var publicHTTP = function publicHTTP(_ref2) {
+  var url = _ref2.url,
+      method = _ref2.method,
+      _ref2$data = _ref2.data,
+      data = _ref2$data === void 0 ? {} : _ref2$data,
+      _ref2$params = _ref2.params,
+      params = _ref2$params === void 0 ? {} : _ref2$params;
+  return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+    baseURL: 'http://127.0.0.1:8000/',
+    method: method,
+    url: url,
+    params: params,
+    data: data
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/services/index.js":
+/*!****************************************!*\
+  !*** ./resources/js/services/index.js ***!
+  \****************************************/
+/*! exports provided: privateHTTP, publicHTTP */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http */ "./resources/js/services/http.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "privateHTTP", function() { return _http__WEBPACK_IMPORTED_MODULE_0__["privateHTTP"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "publicHTTP", function() { return _http__WEBPACK_IMPORTED_MODULE_0__["publicHTTP"]; });
+
+
+
+
+/***/ }),
+
 /***/ "./resources/js/store/blog.js":
 /*!************************************!*\
   !*** ./resources/js/store/blog.js ***!
@@ -42518,13 +42636,14 @@ var actions = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services */ "./resources/js/services/index.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../router */ "./resources/js/router.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -42563,6 +42682,11 @@ var mutations = {
   },
   addNewCategory: function addNewCategory(state, data) {
     state.categories.unshift(data);
+  },
+  deleteCategory: function deleteCategory(state, id) {
+    state.categories = state.categories.filter(function (p) {
+      return p.id !== id;
+    });
   }
 };
 var getters = {
@@ -42574,43 +42698,89 @@ var getters = {
   }
 };
 var actions = {
-  createCategory: function () {
-    var _createCategory = _asyncToGenerator(
+  createCategory: function createCategory(_ref2) {
+    var commit = _ref2.commit;
+    var _state$category = state.category,
+        title = _state$category.title,
+        description = _state$category.description;
+    Object(_services__WEBPACK_IMPORTED_MODULE_1__["privateHTTP"])({
+      url: "/api/categories/",
+      method: 'post',
+      data: {
+        title: title,
+        description: description
+      }
+    }).then(function (res) {
+      commit('addNewCategory', res.data.data);
+    })["catch"](function (e) {
+      if (e.response.status === 401) {
+        _router__WEBPACK_IMPORTED_MODULE_2__["default"].push('/admin/login');
+      }
+    });
+  },
+  updateCategory: function updateCategory(_ref3) {
+    var commit = _ref3.commit;
+    var _state$category2 = state.category,
+        id = _state$category2.id,
+        title = _state$category2.title,
+        description = _state$category2.description;
+    Object(_services__WEBPACK_IMPORTED_MODULE_1__["privateHTTP"])({
+      url: "/api/categories/".concat(id),
+      method: 'put',
+      data: {
+        id: id,
+        title: title,
+        description: description
+      }
+    }).then(function (res) {
+      commit('updateCategory', res.data.data);
+    })["catch"](function (e) {
+      if (e.response.status === 401) {
+        _router__WEBPACK_IMPORTED_MODULE_2__["default"].push('/admin/login');
+      }
+    });
+  },
+  deleteCategory: function deleteCategory(_ref4) {
+    var commit = _ref4.commit;
+    Object(_services__WEBPACK_IMPORTED_MODULE_1__["privateHTTP"])({
+      url: "/api/categories/".concat(state.category.id),
+      method: 'delete',
+      params: {
+        id: state.category.id
+      }
+    }).then(function (res) {
+      commit('deleteCategory', state.category.id);
+    })["catch"](function (e) {
+      if (e.response.status === 401) {
+        _router__WEBPACK_IMPORTED_MODULE_2__["default"].push('/admin/login');
+      }
+    });
+  },
+  getCategories: function () {
+    var _getCategories = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref2) {
-      var commit, _state$category, title, description, token, _ref3, data;
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref5, payload) {
+      var commit, params, _ref6, data;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref2.commit;
-              _state$category = state.category, title = _state$category.title, description = _state$category.description;
-              token = localStorage.getItem('bigStore.jwt');
-              _context.next = 5;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default()({
-                url: "/api/categories/",
-                method: 'post',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': "Bearer ".concat(token)
-                },
-                data: {
-                  title: title,
-                  description: description
-                }
+              commit = _ref5.commit;
+              params = payload && payload.params || {};
+              _context.next = 4;
+              return Object(_services__WEBPACK_IMPORTED_MODULE_1__["publicHTTP"])({
+                method: 'get',
+                url: 'api/categories/',
+                params: params
               });
 
-            case 5:
-              _ref3 = _context.sent;
-              data = _ref3.data;
+            case 4:
+              _ref6 = _context.sent;
+              data = _ref6.data;
+              commit('setCategories', data);
 
-              if (data.status > 0) {
-                commit('addNewCategory', data.data);
-              } else {// TODO: вывести ошибку
-              }
-
-            case 8:
+            case 7:
             case "end":
               return _context.stop();
           }
@@ -42618,97 +42788,7 @@ var actions = {
       }, _callee);
     }));
 
-    function createCategory(_x) {
-      return _createCategory.apply(this, arguments);
-    }
-
-    return createCategory;
-  }(),
-  updateCategory: function () {
-    var _updateCategory = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref4) {
-      var commit, state, _state$category2, id, title, description, token, _ref5, data;
-
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              commit = _ref4.commit, state = _ref4.state;
-              _state$category2 = state.category, id = _state$category2.id, title = _state$category2.title, description = _state$category2.description;
-              token = localStorage.getItem('bigStore.jwt');
-              _context2.next = 5;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default()({
-                url: "/api/categories/".concat(id),
-                method: 'put',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': "Bearer ".concat(token)
-                },
-                data: {
-                  id: id,
-                  title: title,
-                  description: description
-                }
-              });
-
-            case 5:
-              _ref5 = _context2.sent;
-              data = _ref5.data;
-
-              if (data.status > 0) {
-                commit('updateCategory', data.data);
-              } else {// TODO: вывести ошибку
-              }
-
-            case 8:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }));
-
-    function updateCategory(_x2) {
-      return _updateCategory.apply(this, arguments);
-    }
-
-    return updateCategory;
-  }(),
-  getCategories: function () {
-    var _getCategories = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref6, payload) {
-      var commit, params, _ref7, data;
-
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              commit = _ref6.commit;
-              params = payload && payload.params || {};
-              _context3.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default()({
-                baseURL: 'http://127.0.0.1:8001/',
-                method: 'get',
-                url: 'api/categories/',
-                params: params
-              });
-
-            case 4:
-              _ref7 = _context3.sent;
-              data = _ref7.data;
-              commit('setCategories', data);
-
-            case 7:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }));
-
-    function getCategories(_x3, _x4) {
+    function getCategories(_x, _x2) {
       return _getCategories.apply(this, arguments);
     }
 
@@ -43331,7 +43411,7 @@ var actions = {
               params = payload && payload.params || {};
               _context3.next = 4;
               return axios__WEBPACK_IMPORTED_MODULE_1___default()({
-                baseURL: 'http://127.0.0.1:8001/',
+                baseURL: 'http://127.0.0.1:8000/',
                 method: 'get',
                 url: 'api/models/',
                 params: params
@@ -43418,7 +43498,7 @@ var actions = {
               params = payload && payload.params || {};
               _context.next = 4;
               return axios__WEBPACK_IMPORTED_MODULE_1___default()({
-                baseURL: 'http://127.0.0.1:8001/',
+                baseURL: 'http://127.0.0.1:8000/',
                 method: 'get',
                 url: 'api/products/',
                 params: params
@@ -43472,8 +43552,8 @@ var actions = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/pavlyuk/vue-apps/mustang-shop/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Neakit\Desktop\mustangShop\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
