@@ -3,7 +3,7 @@
         <div class="modal-wrapper">
             <div class="modal-container container">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ data.id ? 'Редактирование' : 'Создание'}} продукта</h5>
+                    <h5 class="modal-title">{{ product.id ? 'Редактирование' : 'Создание'}} продукта</h5>
                     <button
                         type="button"
                         class="close"
@@ -16,10 +16,10 @@
                 </div>
                 <div class="row no-gutters p-2">
                     <div class="col-4 p-1">
-                        <div style="display: block; border: 1px dotted grey; height: 100px; border-radius: 8px" v-show="!data.image" class="m-2">
+                        <div style="display: block; border: 1px dotted grey; height: 100px; border-radius: 8px" v-show="!product.image" class="m-2">
                             <p>Загрузите фото</p>
                         </div>
-                        <img v-show="data.image" :src="data.image" alt="image" class="img-thumbnail">
+                        <img v-show="product.image" :src="product.image" alt="image" class="img-thumbnail">
                         <div class="form-group">
                             <input type="file" id="file" @change="attachFile" class="form-control-file">
                         </div>
@@ -28,13 +28,24 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlInput1">Наименование:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="exampleFormControlInput1" v-model="data.title">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="exampleFormControlInput1" 
+                                    :value="product.title || ''"
+                                    @change="setProductProp({ key: 'title', value: $event.target.value })"
+                                >
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlSelect1">Модель:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.product_model_id">
+                                <select 
+                                    class="form-control" 
+                                    id="exampleFormControlSelect1" 
+                                    :value="product.model && product.model.id || ''"
+                                    @change="setProductProp({ key: 'product_model_id', value: $event.target.value })"
+                                >
                                     <option disabled value="">Выберите модель</option>
                                     <option v-for="(item, index) in models" :key="index" :value="item.id">{{ item.title }}</option>
                                 </select>
@@ -43,7 +54,12 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlSelect1">Категория:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.category_id">
+                                <select 
+                                    class="form-control" 
+                                    id="exampleFormControlSelect1" 
+                                    :value="product.category && product.category.id || ''"
+                                    @change="setProductProp({ key: 'category_id', value: $event.target.value })"
+                                >
                                     <option disabled value="">Выберите категорию</option>
                                     <option v-for="(item, index) in categories" :key="index" :value="item.id">{{ item.title }}</option>
                                 </select>
@@ -52,13 +68,24 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlInput1">Цена:</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" id="exampleFormControlInput1" v-model="data.price">
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="exampleFormControlInput1" 
+                                    :value="product.price || ''"
+                                    @change="setProductProp({ key: 'price', value: $event.target.value })"
+                                >
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlSelect1">Статус:</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="exampleFormControlSelect1" v-model="data.status_id">
+                                <select 
+                                    class="form-control" 
+                                    id="exampleFormControlSelect1" 
+                                    :value="product.status && product.status.id || ''"
+                                    @change="setProductProp({ key: 'status_id', value: $event.target.value })"
+                                >
                                     <option disabled value="">Выберите статус</option>
                                     <option v-for="(item, index) in statuses" :key="index" :value="item.id">{{ item.title }}</option>
                                 </select>
@@ -67,14 +94,24 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlTextarea1">Описание:</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="data.description"></textarea>
+                                <textarea 
+                                    class="form-control" 
+                                    id="exampleFormControlTextarea1" 
+                                    rows="3" 
+                                    :value="product.description"
+                                    @change="setProductProp({ key: 'description', value: $event.target.value })"
+                                ></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <slot name="footer">
-                        <button type="button" class="btn btn-primary" @click="saveChanges">{{ data.id ? 'Обновить' : 'Создать'}}</button>
+                        <button 
+                            type="button" 
+                            class="btn btn-primary" 
+                            @click="saveChanges"
+                        >{{ product.id ? 'Обновить' : 'Создать'}}</button>
                     </slot>
                 </div>
             </div>
@@ -85,46 +122,40 @@
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
     export default {
-        props: ['product'],
         data() {
             return {
                 attachment: null
             }
         },
         computed: {
-            ...mapGetters(['models', 'categories', 'statuses']),
-            data() {
-                return {
-                    id: this.product && this.product.id || '',
-                    image: this.product && this.product.image || '',
-                    title: this.product && this.product.title || '',
-                    category_id: this.product && this.product.category.id || '',
-                    product_model_id: this.product && this.product.model.id || '',
-                    status_id: this.product && this.product.status.id || '',
-                    description: this.product && this.product.description || '',
-                    price: this.product && this.product.price || ''
-                }
-            }
+            ...mapGetters('model', ['models']),
+            ...mapGetters('category', ['categories']),
+            ...mapGetters(['statuses']),
+            ...mapGetters('product', ['product'])
         },
         methods: {
-            ...mapMutations(['toggleProductModal']),
-            ...mapActions(['updateProduct', 'createProduct']),
+            ...mapMutations('modals', ['toggleModal']),
+            ...mapMutations('product', ['clearProduct', 'setProductProp']),
+            ...mapActions('product', ['updateProduct', 'createProduct']),
+
             attachFile(event) {
                 this.attachment = event.target.files[0];
             },
+
             async saveChanges() {
-                if(this.data.id) {
+                if(this.product.id) {
                     // upload image
                     await this.uploadFile();
                     // update product
-                    await this.updateProduct(this.data);
+                    await this.updateProduct();
                 } else {
                     // upload image
                     await this.uploadFile();
                     // create
-                    await this.createProduct(this.data);
+                    await this.createProduct();
                 }
             },
+
             async uploadFile() {
                 if (this.attachment != null) {
                     const data = new FormData();
@@ -137,22 +168,18 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-                    this.data.image = result.data;
+                    this.setProductProp({ key: 'image', value: result.data });
                 } else {
                     // this.$emit('close', this.product)
                 }
             },
-            closeModal() {
-                this.data.id = '';
-                this.data.image = '';
-                this.data.title = '';
-                this.data.category_id = '';
-                this.data.product_model_id = '';
-                this.data.status_id = '';
-                this.data.description = '';
-                this.data.price = '';
 
-                this.toggleProductModal(false);
+            closeModal() {
+                this.clearProduct();
+                this.toggleModal({
+                    name: 'productModal',
+                    bool: false
+                });
             }
         }
     }
@@ -161,7 +188,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
 <style scoped>
     .modal-mask {
         position: fixed;
-        z-index: 9998;
+        z-index: 1;
         top: 0;
         left: 0;
         width: 100%;

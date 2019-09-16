@@ -6,7 +6,7 @@
                     <router-link class="nav-link" to="/admin/dashboard">Admin Dashboard</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/admin/products">Продукты: {{ products.length || 0 }}</router-link>
+                    <router-link class="nav-link" to="/admin/products">Продукты: {{ products.data && products.data.length || 0 }}</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/admin/models">Модели: {{ models.length || 0 }}</router-link>
@@ -49,21 +49,19 @@
             DestroyConfirmModal
         },
         mounted() {
-            // this.getProducts();
+            this.getProducts();
             this.getModels();
             this.getCategories();
-            // this.getStatuses();
-            // this.getPosts();
+            this.getStatuses();
+            this.getPosts();
         },
         computed: {
             ...mapGetters('category', ['categories']),
             ...mapGetters('blog', ['posts']),
+            ...mapGetters('model', ['models']),
+            ...mapGetters('product', ['products']),
             ...mapGetters('modals', ['destroyConfirmModal']),
-            ...mapGetters([
-                'products',
-                'models',
-                'user'
-            ]),
+            ...mapGetters(['user']),
             auth() {
                 return this.$route.path !== "/admin/login";
             }
@@ -72,8 +70,8 @@
             ...mapActions('category', ['getCategories']),
             ...mapActions('model', ['getModels']),
             ...mapActions('blog', ['getPosts']),
+            ...mapActions('product', ['getProducts']),
             ...mapActions([
-                'getProducts',
                 'getStatuses'
             ])
         }

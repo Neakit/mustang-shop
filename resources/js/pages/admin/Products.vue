@@ -29,7 +29,7 @@
                  <button class="btn btn-primary btn-block" @click="filterProducts">Поиск</button>
              </div>
              <div class="row col-8">
-                 <table class="table table-responsive table-striped">
+                 <table class="table table-striped table-bordered">
                      <thead>
                      <tr>
                          <td>#</td>
@@ -38,7 +38,7 @@
                          <td>Модель</td>
                          <td>Описание</td>
                          <td>Цена</td>
-                         <td></td>
+                         <td colspan="2"></td>
                      </tr>
                      </thead>
                      <tbody>
@@ -56,10 +56,17 @@
                                  @click="editProduct(product)"
                              >Редактировать</button>
                          </td>
+                         <td>
+                             <button
+                                 type="button"
+                                 class="btn btn-danger"
+                                 @click="deleteProduct(product)"
+                             >Удалить</button>
+                         </td>
                      </tr>
                      </tbody>
                  </table>
-                 <modal :product="product" v-show="productModal"></modal>
+                 <modal v-show="productModal"></modal>
              </div>
              <div class="col-2 align-content-start">
                  <button class="btn btn-primary btn-block" @click="addNewProduct">Добавить новый продукт</button>
@@ -93,8 +100,7 @@
  </template>
 
 <script>
-    // import Modal from '../../components/ProductModal'
-    import Modal from '../../components/admin/PostsEditorModal'
+    import Modal from '../../components/admin/ProductModal'
     import { mapGetters, mapMutations, mapActions } from 'vuex';
 
     export default {
@@ -110,16 +116,17 @@
             Modal
         },
         computed: {
-            ...mapGetters([
-                'products',
-                'categories',
-                'models',
-                'productModal'
-            ])
+            ...mapGetters('product', ['products']),
+            ...mapGetters('category', ['categories']),
+            ...mapGetters('model', ['models']),
+            ...mapGetters('product', ['products']),
+            ...mapGetters('modals', ['productModal'])
         },
         methods: {
-            ...mapMutations(['toggleProductModal']),
-            ...mapActions(['getProducts']),
+            ...mapMutations('modals', ['toggleModal', 'setDestroyData']),
+            ...mapMutations('product', ['setProduct']),
+
+            ...mapActions('product', ['getProducts']),
             filterProducts() {
                 const params = {
                     title: this.title,
@@ -138,10 +145,22 @@
                 this.getProducts({ params: { page } });
             },
             addNewProduct() {
-                this.toggleProductModal(true);
+                this.setProduct({
+                    image: '',
+                    title: '',
+                    category_id: '',
+                    product_model_id: '',
+                    status_id: '',
+                    description: '',
+                    price: ''
+                });
+                this.toggleModal({
+                    name: 'productModal',
+                    bool: true
+                });
             },
             editProduct(product) {
-                this.product = {
+                this.setProduct({
                     id: product.id,
                     image: product.image,
                     title: product.title,
@@ -150,9 +169,25 @@
                     status: product.status,
                     description: product.description,
                     price: product.price
-                };
-
-                this.toggleProductModal(true);
+                });
+                this.toggleModal({
+                    name: 'productModal',
+                    bool: true
+                });
+            },
+            deleteProduct(product){
+                this.setProduct({
+                    id: product.id,
+                });
+                this.setDestroyData({
+                    title: product.title,
+                    deleteActionName: 'product/deleteProduct',
+                    clearMutationName: 'product/clearProduct'
+                });
+                this.toggleModal({
+                    name: 'destroyConfirmModal',
+                    bool: true
+                });
             }
         }
     }
