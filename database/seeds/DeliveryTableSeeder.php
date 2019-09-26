@@ -20,6 +20,6 @@ class DeliveryTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('delivery')->insert($posts);
+        DB::table('deliveries')->insert($posts);
     }
 }

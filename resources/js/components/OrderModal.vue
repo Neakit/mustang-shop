@@ -17,14 +17,25 @@
                 <div class="row no-gutters p-2">
                     <div class="col-12 p-1">
                         <div class="form-group row">
-                            <label class="col-2 col-form-label" for="category-title-form">Оставить заявку:</label>
+                            <label class="col-2 col-form-label" for="category-title-form">Телефон:</label>
+                            <div class="col-sm-10">
+                                <masked-input 
+                                    class="form-control"
+                                    v-model="phone" 
+                                    mask="\+\7 (111) 111-11-11" 
+                                    placeholder="Телефон" 
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="category-title-form">Модель:</label>
                             <div class="col-sm-10">
                                 <input
                                     type="text"
                                     class="form-control"
                                     id="category-title-form"
-                                    :value="category.title"
-                                    @change="setCategoryProp({ key: 'title', value: $event.target.value })"
+                                    :value="order.title"
+                                    disabled
                                 >
                             </div>
                         </div>
@@ -35,8 +46,8 @@
                                     class="form-control"
                                     id="category-description-form"
                                     rows="3"
-                                    :value="category.description"
-                                    @change="setCategoryProp({ key: 'description', value: $event.target.value })"
+                                    :value="order.description"
+                                    disabled
                                 ></textarea>
                             </div>
                         </div>
@@ -44,7 +55,7 @@
                 </div>
                 <div class="modal-footer">
                     <slot name="footer">
-                        <button type="button" class="btn btn-primary" @click="saveChanges">{{ category.id ? 'Обновить' : 'Создать'}}</button>
+                        <button type="button" class="btn btn-primary" @click="makeOrderWrap">Оформить заказ</button>
                     </slot>
                 </div>
             </div>
@@ -54,27 +65,31 @@
 
 <script>
     import { mapMutations, mapActions, mapGetters } from 'vuex';
+    import MaskedInput from 'vue-masked-input';
+
     export default {
         computed: {
-            ...mapGetters('category', ['category']),
-            ...mapGetters('modals', ['categoryModal']),
+            ...mapGetters('order', ['order']),
+        },
+        components: {
+            MaskedInput
+        },
+        data() {
+            return {
+                phone: ''
+            }
         },
         methods: {
-            ...mapActions('category', ['createCategory', 'updateCategory']),
-            ...mapMutations('category', ['setCategoryProp', 'clearCategory', '']),
+            ...mapMutations('order', ['clearOrder', 'setPhone']),
             ...mapMutations('modals', ['toggleModal']),
-            saveChanges() {
-                if(this.category.id) {
-                    // update product
-                    this.updateCategory();
-                } else {
-                    // create
-                    this.createCategory();
-                }
+            ...mapActions('order', ['makeOrder']),
+            makeOrderWrap() {
+                this.makeOrder(this.phone);
             },
             closeModal() {
-                this.clearCategory();
-                this.toggleModal({ name: 'categoryModal', bool: false });
+                this.phone = '';
+                this.clearOrder();
+                this.toggleModal({ name: 'orderModal', bool: false });
             }
         }
     }

@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             PostTableSeeder::class,
             ProductsCategoriesTableSeeder::class,
             ProductsCurrenciesTableSeeder::class,
-            ProductsModelsTableSeeder::class,
+            ProductsModelTableSeeder::class,
             ProductsStatusTableSeeder::class,
             ProductsTableSeeder::class,
           ]);

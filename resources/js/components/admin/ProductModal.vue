@@ -15,16 +15,32 @@
                     </button>
                 </div>
                 <div class="row no-gutters p-2">
-                    <div class="col-4 p-1">
-                        <div style="display: block; border: 1px dotted grey; height: 100px; border-radius: 8px" v-show="!product.image" class="m-2">
-                            <p>Загрузите фото</p>
-                        </div>
-                        <img v-show="product.image" :src="product.image" alt="image" class="img-thumbnail">
-                        <div class="form-group">
-                            <input type="file" id="file" @change="attachFile" class="form-control-file">
+                    <div class="col-12 p-1">
+                        <div class="images-wrapper row align-items-center">
+                            <div class="col"
+                                style="position: relative;  border: 1px solid #3490dc; text-align: center"
+                                v-for="(image, index) in product.images" 
+                                :key="index"
+                            >   
+                                <i class="material-icons"
+                                    style="position: absolute; right: 0; top: 5px; cursor: pointer"
+                                    @click="removeImageWrap(image, index)"
+                                >
+                                    close
+                                </i>
+                                <img
+                                    :src="image" 
+                                    class="product-image-block"
+                                    alt="part-image" 
+                                >
+                            </div>
+                            <div class="col" style="text-align: center">
+                                <button class="btn btn-success" @click="selectImage">+</button>
+                                <input type="file" id="file" @change="attachFile" ref="imageUploadInput" v-show="false">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-8 p-1">
+                    <div class="col-12 p-1">
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="exampleFormControlInput1">Наименование:</label>
                             <div class="col-sm-10">
@@ -43,7 +59,7 @@
                                 <select 
                                     class="form-control" 
                                     id="exampleFormControlSelect1" 
-                                    :value="product.model && product.model.id || ''"
+                                    :value="product.product_model_id || ''"
                                     @change="setProductProp({ key: 'product_model_id', value: $event.target.value })"
                                 >
                                     <option disabled value="">Выберите модель</option>
@@ -57,7 +73,7 @@
                                 <select 
                                     class="form-control" 
                                     id="exampleFormControlSelect1" 
-                                    :value="product.category && product.category.id || ''"
+                                    :value="product.category_id || ''"
                                     @change="setProductProp({ key: 'category_id', value: $event.target.value })"
                                 >
                                     <option disabled value="">Выберите категорию</option>
@@ -83,7 +99,7 @@
                                 <select 
                                     class="form-control" 
                                     id="exampleFormControlSelect1" 
-                                    :value="product.status && product.status.id || ''"
+                                    :value="product.status_id || ''"
                                     @change="setProductProp({ key: 'status_id', value: $event.target.value })"
                                 >
                                     <option disabled value="">Выберите статус</option>
@@ -120,13 +136,18 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapGetters } from 'vuex';
+import { mapMutations, mapActions, mapGetters, mapState } from 'vuex';
+import { privateHTTPTest } from '../../services';
+
     export default {
         data() {
             return {
-                attachment: null
+                attachment: null,
+                attachments: null,
+                clientImages: []
             }
         },
+        
         computed: {
             ...mapGetters('model', ['models']),
             ...mapGetters('category', ['categories']),
@@ -135,32 +156,68 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
         },
         methods: {
             ...mapMutations('modals', ['toggleModal']),
-            ...mapMutations('product', ['clearProduct', 'setProductProp']),
+            ...mapMutations('product', [
+                'clearProduct', 
+                'setProductProp', 
+                'addImages', 
+                'removeImage'
+            ]),
             ...mapActions('product', ['updateProduct', 'createProduct']),
 
+            removeImageWrap(image, index) {
+                const nameIndex = image.lastIndexOf('/');
+                const name = image.slice(nameIndex + 1);
+
+                const id = this.product.id || null;
+
+                if(id) {
+                    const images = JSON.stringify(this.product.images);
+                    this.$axios({
+                        method: 'get',
+                        url: '/api/delete-file',
+                        params: {
+                            name,
+                            images,
+                            id
+                        }
+                    }).then(res => {
+                        this.removeImage(index);
+                    })
+                } else {
+                    this.$axios({
+                        method: 'get',
+                        url: '/api/delete-file',
+                        params: {
+                            name
+                        }
+                    }).then(res => {
+                        this.removeImage(index);
+                    }) 
+                }
+            },
+            selectImage() {
+                this.$refs.imageUploadInput.click()
+            },
             attachFile(event) {
                 this.attachment = event.target.files[0];
+                this.uploadFile();
             },
 
+            attachFiles(event) {
+                this.attachments = event.target.files[0];
+            },
             async saveChanges() {
                 if(this.product.id) {
-                    // upload image
-                    await this.uploadFile();
-                    // update product
                     await this.updateProduct();
                 } else {
-                    // upload image
-                    await this.uploadFile();
-                    // create
                     await this.createProduct();
                 }
             },
-
             async uploadFile() {
                 if (this.attachment != null) {
                     const data = new FormData();
                     data.append("image", this.attachment);
-                    const result = await axios({
+                    const result = await this.$axios({
                         method: 'post',
                         url: '/api/upload-file',
                         data,
@@ -168,12 +225,12 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-                    this.setProductProp({ key: 'image', value: result.data });
+                    this.addImages(result.data);
+
                 } else {
                     // this.$emit('close', this.product)
                 }
             },
-
             closeModal() {
                 this.clearProduct();
                 this.toggleModal({
@@ -186,9 +243,13 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
 </script>
 
 <style scoped>
+    .image-small {
+        width: 150px;
+        height: 150px;
+    }
     .modal-mask {
         position: fixed;
-        z-index: 1;
+        z-index: 2;
         top: 0;
         left: 0;
         width: 100%;
@@ -202,6 +263,8 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
         vertical-align: middle;
     }
     .modal-container {
+        overflow: scroll;
+        height: 38em;
         /* width: 300px; */
         margin: 0px auto;
         /* padding: 20px 30px; */
@@ -228,5 +291,15 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
     .modal-leave-active .modal-container {
         -webkit-transform: scale(1.1);
         transform: scale(1.1);
+    }
+    .images-wrapper {
+        height: 150px;
+        border: 1px solid #000;
+        border-radius: 8px;
+    }
+    .product-image-block {
+        margin: 4px;
+        /* width: 100%; */
+        max-height: 138px;
     }
 </style>

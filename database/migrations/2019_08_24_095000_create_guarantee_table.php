@@ -13,7 +13,7 @@ class CreateGuaranteeTable extends Migration
      */
     public function up()
     {
-        Schema::create('guarantee', function (Blueprint $table) {
+        Schema::create('guarantees', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('body');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateGuaranteeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guarantee');
+        Schema::dropIfExists('guarantees');
     }
 }

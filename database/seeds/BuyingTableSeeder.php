@@ -20,6 +20,6 @@ class BuyingTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('buying')->insert($posts);
+        DB::table('buyings')->insert($posts);
     }
 }

@@ -52,13 +52,14 @@ const actions = {
     createCategory({ commit }) {
         const { title, description } = state.category;
         privateHTTP({
-            url: `/api/categories/`,
+            url: `/api/categories`,
             method: 'post',
             data: {
                 title,
                 description
             }
         }).then(res => {
+            commit('modals/toggleModal', { name: 'categoryModal', bool: false }, { root: true });
             commit('addNewCategory', res.data.data);
             commit('modals/setToastMessage', 'Категория успешно создана', { root: true });
             commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });

@@ -13,7 +13,7 @@ class CreateBuyingTable extends Migration
      */
     public function up()
     {
-        Schema::create('buying', function (Blueprint $table) {
+        Schema::create('buyings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('body');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateBuyingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('buying');
+        Schema::dropIfExists('buyings');
     }
 }

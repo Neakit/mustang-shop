@@ -27,7 +27,7 @@
                     <router-link class="nav-link" to="/admin/buying">Скупка</router-link>
                 </li>
             </ul>
-            <button type="button" class="btn btn-outline-dark">Выйти</button>
+            <button type="button" class="btn btn-outline-dark" @click="clearAuth">Выйти</button>
         </nav>
         <nav class="navbar navbar-expand-sm navbar-light bg-light" v-else>
             <p>Авторизуйтесь, чтобы войти в панель управления</p>
@@ -73,7 +73,11 @@
             ...mapActions('product', ['getProducts']),
             ...mapActions([
                 'getStatuses'
-            ])
+            ]),
+            clearAuth() {
+                localStorage.removeItem("bigStore");
+                this.$router.push('/shop');
+            }
         }
     }
 </script>

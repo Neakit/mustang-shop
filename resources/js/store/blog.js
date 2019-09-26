@@ -54,7 +54,7 @@ const actions = {
     async getPosts({ commit }, payload) {
         const params = payload && payload.params || {};
         const { data } = await axios({
-            baseURL: 'http://127.0.0.1:8000/',
+            baseURL: 'http://auto-mustang.ru/',
             method: 'get',
             url: 'api/posts/',
             params
@@ -90,8 +90,8 @@ const actions = {
     async createPost({ commit }) {
         const { title, description, body, image } = state.post;
         const token = localStorage.getItem('bigStore.jwt');
-        const { data } = await axios({
-            url: `/api/posts/`,
+        await axios({
+            url: `/api/posts`,
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +103,12 @@ const actions = {
                 body,
                 image
             }
-        });
+        }).then(res => {
+            commit('modals/toggleModal', { name: 'blogModal', bool: false }, { root: true });
+            commit('addNewPost', res.data.data[0]);
+            commit('modals/setToastMessage', 'Пост успешно создан', { root: true });
+            commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });
+        })
     },
     async deletePost({ commit }) {
         const token = localStorage.getItem('bigStore.jwt');

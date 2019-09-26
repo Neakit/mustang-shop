@@ -15,7 +15,7 @@
             this.getPage();
         },
         methods: {
-            getPage () {
+            getPage() {
                 this.$axios.get('/api/buying').then(res => {
                     this.page = res.data[0].body;
                 })

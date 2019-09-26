@@ -1,10 +1,12 @@
 import axios from 'axios';
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded'
 
-export const privateHTTP = ({ url, method, data = {}, params }) => {
-    // get token 
+export const privateHTTP = ({ url, method, data = {}, params = {} }) => {
     const token = localStorage.getItem('bigStore.jwt');
     if(token !== null) {
-        return axios({
+         return axios({
+            baseURL: 'http://auto-mustang.ru',
+            // baseURL: 'http://127.0.0.1:8000',
             url,
             method,
             params,
@@ -13,20 +15,14 @@ export const privateHTTP = ({ url, method, data = {}, params }) => {
                 'Authorization': `Bearer ${token}`
             },
             data
-        });
-    } else {
-        return axios({
-            url,
-            method,
-            params,
-            data
-        });
+        })
     } 
 }
 
 export const publicHTTP = ({ url, method, data = {}, params = {} }) => {
     return axios({
-        baseURL: 'http://127.0.0.1:8000/',
+        baseURL: 'http://auto-mustang.ru',
+        // baseURL: 'http://127.0.0.1:8000',
         method,
         url,
         params,

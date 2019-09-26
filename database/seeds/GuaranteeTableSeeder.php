@@ -20,6 +20,6 @@ class GuaranteeTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('guarantee')->insert($posts);
+        DB::table('guarantees')->insert($posts);
     }
 }

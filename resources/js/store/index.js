@@ -7,6 +7,7 @@ import category from './category';
 import model from './model';
 import product from './product';
 import blog from './blog';
+import order from './order';
 
 Vue.use(Vuex);
 
@@ -14,15 +15,12 @@ export default new Vuex.Store({
         state: {
             auth: false,
             user: [],
-            categories: [],
             models: [],
             statuses: [],
-            productModal: false
+            productModal: false,
+            image: ''
         },
         getters: {
-            categories(state) {
-                return state.categories;
-            },
             models(state) {
                 return state.models;
             },
@@ -46,9 +44,6 @@ export default new Vuex.Store({
             setModels(state, payload) {
                 state.models = payload;
             },
-            setCategories(state, payload) {
-                state.categories = payload;
-            },
             setStatuses(state, payload) {
                 state.statuses = payload;
             },
@@ -57,28 +52,24 @@ export default new Vuex.Store({
             },
             toggleProductModal(state, bool) {
                 state.productModal = bool;
+            },
+            setImage(state, image) {
+                state.image = image;
             }
         },
         actions: {
             async getModels({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
+                    baseURL: 'http://auto-mustang.ru',
                     method: 'get',
                     url: 'api/models/'
                 });
                 commit('setModels', data);
             },
-            async getCategories({ commit }) {
-                const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
-                    method: 'get',
-                    url: 'api/categories/'
-                });
-                commit('setCategories', data);
-            },
             async getStatuses({ commit }) {
                 const { data } = await axios({
-                    baseURL: 'http://127.0.0.1:8000/',
+                    baseURL: 'http://auto-mustang.ru',
+                    // baseURL: 'http://127.0.0.1:8000',
                     method: 'get',
                     url: 'api/statuses/'
                 });
@@ -90,7 +81,8 @@ export default new Vuex.Store({
             category,
             model,
             product,
-            blog
+            blog,
+            order
         }
     }
 );

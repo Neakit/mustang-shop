@@ -16,7 +16,7 @@ class ProductModelController extends Controller
     {
         $models = ProductModel::where(function($q) use ($request) {
             if(isset($request->title)){
-                $q->where('title', 'like', "%{$request->title}%");
+                $q->where('title', 'like', "%" . urldecode($request->title) . "%");
             }
             if(isset($request->id)){
                 $q->where('id', '=', $request->id);

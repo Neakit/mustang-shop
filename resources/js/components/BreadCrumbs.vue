@@ -1,28 +1,34 @@
 <template>
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Library</li>
+        <ol class="breadcrumb" v-if="$route.name == 'shop' || $route.name == 'singleProduct'">
+            <li class="breadcrumb-item">
+                <router-link to="/shop">Магазин</router-link>
+            </li>
+            <li 
+                class="breadcrumb-item active" 
+                aria-current="page"
+                v-if="$route.params && $route.params.id"
+            >{{ $route.params.id }}</li>
+        </ol>
+
+        <ol class="breadcrumb" v-else-if="$route.name == 'blog' || $route.name == 'blogpost'">
+            <li class="breadcrumb-item">
+                <router-link to='/blog'>Блог</router-link>
+            </li>
+            <li 
+                class="breadcrumb-item active" 
+                aria-current="page" 
+                v-if="$route.params && $route.params.article"
+            >
+                {{ $route.params.article }}
+            </li>
         </ol>
     </nav>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      items: [
-        {
-          text: 'Магазин',
-          href: '#'
-        },
-        {
-          text: 'Двигатели',
-          href: '#'
-        }
-      ]
-    }
-  }
+   
 }
 </script>
 

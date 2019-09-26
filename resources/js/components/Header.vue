@@ -18,8 +18,8 @@
                         class="map-logo d-sm-none d-md-block"
                     />
                     <div class="address">
-                        <p class="address-title">Московская обл, г. Химки, <br />мкр. ffffffff</p>
-                        <p class="address-subtitle">Показать на карте</p>
+                        <p class="address-title">Москва, Ленинградское шоссе, 238</p>
+                        <!-- <p class="address-subtitle">Показать на карте</p> -->
                     </div>
                 </div>
             </div>
@@ -31,8 +31,8 @@
                         class="phone-logo d-sm-none d-md-block"
                     />
                     <div class="phone">
-                        <p class="phone-title">+7 999 000 00 00</p>
-                        <p class="phone-subtitle">mail@mail.ru<br />mail@mail.ru</p>
+                        <p class="phone-title">8 925 502-33-10</p>
+                        <p class="phone-subtitle">info@auto-mustang.ru</p>
                     </div>
                 </div>
             </div>

@@ -16,10 +16,10 @@ class CategoryController extends Controller
     {
         $categories = Category::where(function($q) use ($request) {
             if(isset($request->title)){
-                $q->where('title', 'like', "%{$request->title}%");
+                $q->where('title', 'like', "%" . urldecode($request->title) . "%");
             }
             if(isset($request->description)){
-                $q->where('description', 'like', "%{$request->description}%");
+                $q->where('title', 'like', "%" . urldecode($request->description) . "%");
             }
             if(isset($request->id)){
                 $q->where('id', '=', $request->id);
@@ -42,7 +42,7 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
         $data = Category::where('id', $category->id)->first();
-
+        
         return response()->json([
             'status' => (bool) $category ? 1 : 0,
             'data' => $data,

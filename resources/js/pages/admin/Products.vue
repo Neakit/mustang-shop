@@ -19,7 +19,7 @@
                      </div>
                      <div class="form-group">
                          <label for="exampleFormControlSelect1">Модель:</label>
-                         <select class="form-control" id="exampleFormControlSelect1" v-model="model_id">
+                         <select class="form-control" id="exampleFormControlSelect1" v-model="product_model_id">
                              <option disabled value="">Выберите модель</option>
                              <option v-for="(item, index) in models" :key="index" :value="item.id">{{ item.title }}</option>
                          </select>
@@ -108,7 +108,7 @@
             return {
                 product: null,
                 category_id: "",
-                model_id: "",
+                product_model_id: "",
                 title: ""
             }
         },
@@ -130,14 +130,14 @@
             filterProducts() {
                 const params = {
                     title: this.title,
-                    model_id: this.model_id,
+                    product_model_id: this.product_model_id,
                     category_id: this.category_id
                 };
                 this.getProducts({ params });
             },
             clearFilter() {
                 this.category_id = "";
-                this.model_id = "";
+                this.product_model_id = "";
                 this.title = "";
                 this.getProducts();
             },
@@ -147,6 +147,7 @@
             addNewProduct() {
                 this.setProduct({
                     image: '',
+                    images: [],
                     title: '',
                     category_id: '',
                     product_model_id: '',
@@ -163,10 +164,11 @@
                 this.setProduct({
                     id: product.id,
                     image: product.image,
+                    images: product.images,
                     title: product.title,
-                    category: product.category,
-                    model: product.model,
-                    status: product.status,
+                    category_id: product.category.id,
+                    product_model_id: product.model.id,
+                    status_id: product.status.id,
                     description: product.description,
                     price: product.price
                 });

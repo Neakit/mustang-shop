@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+
+
 Route::post('login', 'UserController@login');
 Route::post('register', 'UserController@register');
 Route::get('/products', 'ProductController@index');
@@ -31,6 +33,8 @@ Route::get('/delivery', 'DeliveryController@index');
 Route::get('/buying', 'BuyingController@index');
 
 Route::post('/upload-file', 'ProductController@uploadFile');
+Route::get('/delete-file', 'ProductController@deleteFile');
+
 Route::get('/products/{product}', 'ProductController@show');
 Route::post('/product', 'ProductController@filterProducts');
 

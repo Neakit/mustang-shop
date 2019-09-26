@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-image-wrap row no-gutters justify-content-center align-items-center">
-            <img :src="card.image" class="card-image" alt="product-card" />
+            <img :src="card.images[0]" class="card-image" alt="product-card" />
         </div>
         <div class="card-body p-2">
             <h5 class="card-title">{{ card.title }}</h5>

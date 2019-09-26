@@ -39,7 +39,15 @@
                 }
             }
         },
+        mounted() {
+            this.getPage();
+        },
         methods: {
+            getPage () {
+                this.$axios.get('/api/buying').then(res => {
+                    this.body = res.data[0].body;
+                })
+            },
             async updatePage() {
                 const token = localStorage.getItem('bigStore.jwt');
                 const { data } = await this.$axios({

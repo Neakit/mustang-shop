@@ -14,16 +14,13 @@ class Product extends Model
         'description',
         'price',
         'image',
+        'images',
         'product_model_id',
         'category_id',
         'status_id'
     ];
 
     protected $hidden = [
-        'category_id',
-        'currency_id',
-        'product_model_id',
-        'status_id',
         'deleted_at',
         'updated_at'
     ];

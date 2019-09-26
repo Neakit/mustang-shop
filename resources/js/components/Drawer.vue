@@ -8,8 +8,11 @@
                 :value="search"
                 @input="searchProducts($event.target.value)"
             >
-            <i class="material-icons search-field-icon">
+            <i class="material-icons search-field-icon" v-if="!search.length">
                 search
+            </i>
+            <i class="material-icons search-field-icon" v-else @click="getProducts()">
+                close
             </i>
         </div>
 
@@ -103,6 +106,7 @@
     .search-field {
         box-shadow: 0 0 4px rgba(0,0,0,0.2);
         position: relative;
+        cursor: pointer;
     }
 
     .search-field-icon {

@@ -7,6 +7,8 @@
             <router-view></router-view>
         </main>
         <Modal v-show="orderModal"/>
+        <OrderSuccess v-show="orderSuccess"/>
+        <ProductImageModal v-show="productImageModal"/>
 <!--        <Footer />-->
     </div>
 </template>
@@ -14,7 +16,9 @@
 <script>
     import Menu from '../components/Menu';
     import Header from '../components/Header';
-    import Modal from '../components/OrderModal'
+    import Modal from '../components/OrderModal';
+    import OrderSuccess from '../components/OrderSuccess';
+    import ProductImageModal from '../components/ProductImageModal';
     import Footer from '../components/Footer';
     import { mapActions, mapGetters } from 'vuex';
 
@@ -23,7 +27,9 @@
             Menu,
             Header,
             Modal,
-            Footer
+            Footer,
+            OrderSuccess,
+            ProductImageModal
         },
         mounted() {
             this.getModels();
@@ -31,7 +37,7 @@
             this.getProducts();
         },
         computed: {
-            ...mapGetters('modals', ['orderModal'])
+            ...mapGetters('modals', ['orderModal', 'orderSuccess', 'productImageModal'])
         },
         methods : {
             ...mapActions('category', ['getCategories']),

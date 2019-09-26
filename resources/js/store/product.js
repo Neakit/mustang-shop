@@ -5,6 +5,7 @@ const createEmptyProduct = () => {
     return {
         id: '',
         image: '',
+        images: [],
         title: '',
         category_id: '',
         product_model_id: '',
@@ -20,8 +21,14 @@ const state = {
 };
 
 const mutations = {
-    setProducts(state, payload) {
-        state.products = payload;
+    setProducts(state, products) {
+        products.data = products.data.map(i => {
+            if(i.images !== null) {
+                i.images = JSON.parse(i.images);
+            }
+            return i
+        });
+        state.products = products;
     },
     setProduct(state, payload) {
         state.product = payload;
@@ -36,12 +43,25 @@ const mutations = {
         state.products.data = state.products.data.filter(p => p.id !== id);
     },
     addNewProduct(state, product) {
+        product.images = JSON.parse(product.images);
         state.products.data.push(product);
     },
     updateProduct(state, product) {
         let updatedPropduct = state.products.data.find(p => p.id === product.id);
         Object.assign(updatedPropduct, product);
     },
+    addImages(state, payload) {
+        if(state.product.images === null) {
+            state.product.images = [];
+        }
+        state.product.images.push(payload);
+    },
+    removeImage(state, index) {
+        const newImages = state.product.images.filter((image, i) => {
+            return i !== index;
+        });
+        state.product.images = newImages;
+    }
 };
 
 const getters = {
@@ -49,6 +69,10 @@ const getters = {
         return state.products;
     },
     product(state) {
+        if(state.product.images !== null && typeof(state.product.images) === 'string') {
+            state.product.images = JSON.parse(state.product.images);
+            return state.product;
+        }
         return state.product;
     }
 };
@@ -56,7 +80,6 @@ const getters = {
 const actions = {
     getProducts({ commit }, payload) {
         const params = payload && payload.params || {};
-
         publicHTTP({
             method: 'get',
             url: 'api/products/',
@@ -67,11 +90,13 @@ const actions = {
     },
     async createProduct({ commit }) {
         const product = state.product;
+        product.images = JSON.stringify(product.images);
         privateHTTP({
-            url: `/api/products/`,
+            url: 'api/products',
             method: 'post',
             data: { ...product }
         }).then(res => {
+            commit('modals/toggleModal', { name: 'productModal', bool: false }, { root: true });
             commit('addNewProduct', res.data.data);
             commit('modals/setToastMessage', 'Продукт успешно создан', { root: true });
             commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });
@@ -83,6 +108,7 @@ const actions = {
     },
     updateProduct({ commit }) {
         const product = state.product;
+        product.images = JSON.stringify(product.images);
         privateHTTP({
             url: `/api/products/${product.id}`,
             method: 'put',

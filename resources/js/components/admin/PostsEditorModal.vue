@@ -104,7 +104,7 @@
                 if (this.attachment != null) {
                     const data = new FormData();
                     data.append("image", this.attachment);
-                    const result = await axios({
+                    const result = await this.$axios({
                         method: 'post',
                         url: '/api/upload-file',
                         data,
@@ -157,7 +157,7 @@
         vertical-align: middle;
     }
     .modal-container {
-        height: 48rem;
+        height: 38rem;
         overflow: scroll;
         padding: 1.5rem;
         margin: 0 auto;

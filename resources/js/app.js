@@ -8,11 +8,20 @@ import router from './router';
 import store from './store';
 
 import axios from 'axios';
-Vue.prototype.$axios = axios;
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded'
 
+try {
+    window.Popper = require('popper.js').default;
+    window.$ = window.jQuery = require('jquery');
+
+    require('bootstrap');
+} catch (e) {}
+
+Vue.prototype.$axios = axios;
 import 'quill/dist/quill.core.css'
 
 Vue.use(VueQuillEditor);
+
 
 const app = new Vue({
     el: '#app',

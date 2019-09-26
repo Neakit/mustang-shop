@@ -11,10 +11,10 @@ class PostController extends Controller
     {
         $posts = Post::where(function($q) use ($request) {
             if(isset($request->title)){
-                $q->where('title', 'like', "%{$request->title}%");
+                $q->where('title', 'like', "%" . urldecode($request->title) . "%");
             }
             if(isset($request->body)){
-                $q->where('body', 'like', "%{$request->body}%");
+                $q->where('title', 'like', "%" . urldecode($request->body) . "%");
             }
         })->paginate(10);
 

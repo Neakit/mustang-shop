@@ -4,6 +4,8 @@ const state = {
     productModelModal: false,
     blogModal: false,
     orderModal: false,
+    orderSuccess: false,
+    productImageModal: false,
 
     destroyConfirmModal: false,
     destroyData: {},
@@ -40,8 +42,14 @@ const getters = {
     orderModal(state) {
         return state.orderModal;
     },
+    orderSuccess(state) {
+        return state.orderSuccess;
+    },
     destroyConfirmModal(state) {
         return state.destroyConfirmModal;
+    },
+    productImageModal(state) {
+        return state.productImageModal;
     }
 };
 

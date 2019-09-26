@@ -50,15 +50,15 @@ const getters = {
 const actions = {
     async createModel({ commit }) {
         const { title, description } = state.model;
-
         privateHTTP({
-            url: `/api/models/`,
+            url: `/api/models`,
             method: 'post',
             data: {
                 title,
                 description
             }
         }).then(res => {
+            commit('modals/toggleModal', { name: 'productModelModal', bool: false }, { root: true });
             commit('addNewModel', res.data.data);
             commit('modals/setToastMessage', 'Модель успешно создана', { root: true });
             commit('modals/toggleModal', { name: 'toastModal', bool: true }, { root: true });
